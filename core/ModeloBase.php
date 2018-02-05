@@ -14,15 +14,15 @@ class ModeloBase extends EntidadBase{
         return $this->fluent;
     } laravel query builder*/
      
-    public function executeSql($query){
+    public function executeSql($query,$unite=true){
         $query=$this->db()->query($query);
         if($query==true){
             //echo "here true";
-            if($query->num_rows>1){
+            if($query->num_rows>1 or $unite == false){
                 while($row = $query->fetch_object()) {
                    $resultSet[]=$row;
                 }
-            }elseif($query->num_rows==1){
+            }elseif($query->num_rows==1 and $unite == true){
                 if($row = $query->fetch_object()) {
                     $resultSet=$row;
                 }

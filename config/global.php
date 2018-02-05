@@ -20,8 +20,9 @@ else{
  	if(($ts2-$ts1)/60>30)
  	{
  		session_destroy();
- 		echo "sesion terminada por inactividad";
- 		exit;
+ 		header("Location: index.php");
+ 		//echo "sesion terminada por inactividad";
+ 		//exit;
  		//echo "cumplida";
  	}
  	else{

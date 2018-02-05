@@ -111,7 +111,7 @@
         </li>      
      
         <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Link">
-          <a style="color:white;" class="nav-link" href="#">
+          <a style="color:white;" class="nav-link" href="<?php echo $helper->url("Consult"); ?>">
             <i class="fa fa-fw fa-link"></i>
             <span class="nav-link-text">Consultas</span>
           </a>
