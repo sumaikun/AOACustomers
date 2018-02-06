@@ -12,7 +12,7 @@
     src: url(assets/fonts/LicensePlate.ttf) format("truetype");
     }
 
-    #placa
+    #placa_result
     {
        background-image: url("Images/carplate.png");
        background-repeat: no-repeat;
@@ -50,15 +50,15 @@
               <form onsubmit="return fake_form()">
                 <div class="form-group">
                   <label class="form-control">Placa</label>
-                  <input type="text" class="form-control" id="placa"  maxlength="6" autocomplete="off">
+                  <input type="text" style="text-align: center;" class="form-control" id="placa"  maxlength="6" autocomplete="off">
                 </div>
                 <div class="form-group">
                   <label class="form-control">Cedula</label>
-                  <input type="text" id="cedula" class="form-control" onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;"  maxlength="10" autocomplete="off">
+                  <input type="text" id="cedula" class="form-control" onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" style="text-align: center;"  maxlength="10" autocomplete="off">
                 </div>  
                 <div class="form-group">
                   <label class="form-control">Poliza</label>
-                  <input type="text" id="poliza" class="form-control" autocomplete="off">
+                  <input type="text" id="poliza" style="text-align: center;" maxlength="30" class="form-control" autocomplete="off">
                 </div>
                 <div class="form-group">
                   <button class="btn btn-success form-control" onclick="consult_data()">Consultar</button>
