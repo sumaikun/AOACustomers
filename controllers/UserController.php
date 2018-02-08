@@ -36,6 +36,8 @@ class UserController extends ControladorBase{
         //Cargamos la vista index y le pasamos valores
         $modeluser = new Usuarios($this->adapter);
         $usuarios = $modeluser->getAll();
+        //print_r($usuarios);
+
         $modelAseguradora =  new Aseguradoras($this->adapter);
         $aseguradoras = $modelAseguradora->orderBy("nombre","ASC");
         $asqlmodel = new SQLModel("aoacol_aoacars.aseguradora",$this->adapter);
@@ -54,7 +56,7 @@ class UserController extends ControladorBase{
             $usuario->$setter($temp);
         }
 
-        if($usuario->save())
+        if($usuario->save($usuario))
         {
             $this->message->success('Usuario guardado');    
         }
@@ -75,7 +77,7 @@ class UserController extends ControladorBase{
             $usuario->$setter($temp);
         }
 
-        if($usuario->update())
+        if($usuario->update($usuario))
         {
             $this->message->success('Usuario actualizado');    
         }
@@ -124,6 +126,18 @@ class UserController extends ControladorBase{
 
          $this->redirect('User');
         
+    }
+
+    public function test()
+    {
+           set_time_limit(300);
+           $sqlmodel = new SQLModel("undefined",$this->adapter);
+           $sql = "Select count(event_time) from mysql.general_log ";
+           $registros = $sqlmodel->executeSql($sql);
+           foreach ($registros as $registro) {
+               echo json_encode($registro);
+               echo "<br>";
+           }
     }
 
 

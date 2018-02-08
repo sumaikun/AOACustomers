@@ -5,26 +5,12 @@
       /*background-color: #848484 !important;*/
       background-color: #A4A4A4 !important;
     }
-     .load_table{
+     /*.load_table{
       display: none;
-    }
+    }*/
    
   </style>
-  <script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"> </script>
-  <script>
-  webshims.setOptions('forms-ext', {types: 'date'});
-  webshims.polyfill('forms forms-ext');
-  $.webshims.formcfg = {
-  en: {
-      dFormat: '-',
-      dateSigns: '-',
-      patterns: {
-          d: "yy-mm-dd"
-      }
-  }
-  };
-
-  </script>
+  
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -66,10 +52,27 @@
                  <label class="form-control">Fecha Final</label>
                  <input class="form-control" type="date" max=<?php echo date('Y-m-d'); ?> <?php if(isset($_POST['fecha2'])){ ?> value="<?php echo $_POST['fecha2'] ?>" <?php } ?> name="fecha2" id="fecha2">
                </div>
-               <button type="submit" class="btn btn-warning">Filtrar</button>
+               <input type="hidden" name="type_of_filter" id="type_of_filter">
+               <button type="submit" onclick="return filter_html()" class="btn btn-warning">Filtrar</button>
+               <button type="submit" onclick="return filter_excel()" class="btn btn-success"><i class="fal fa-table"></i>Generar Excel</button>
             </form>
           <br>
-         
+          
+          <script>
+            
+            function filter_html()
+            {
+              $("#type_of_filter").val(1);
+              return true;
+            }
+
+            function filter_excel()
+            {
+              $("#type_of_filter").val(2);
+              return true;
+            }
+
+          </script>
 
           <div>
             <div class="lds-css">
@@ -88,63 +91,9 @@
           </div>
         </div>
 
-          <div class="table-responsive load_table">
-            <table class="table table-bordered" id="registers_table" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>id</th>
-                  <th>placa</th>
-                  <th>Nombre<br>Cliente</th>
-                  <th>Identificación</th>
-                  <th>Celular</th>
-                  <th>Ciudad</th>
-                  <th>Fecha<br>Notificación</th>
-                  <th>Dirección</th>
-                  <th>Vehiculo<br>Reemplazo</th>
-                  <th>Entrega</th>
-                  <th>Dias<br>prestados</th>
-                  <th>Fecha<br>Devolución</th>
-                  <th>Estado</th>                  
-                </tr>
-              </thead>
-              <tfoot>
-                <tr>
-                  <th>id</th>
-                  <th>placa</th>
-                  <th>Nombre<br>Cliente</th>
-                  <th>Identificación</th>
-                  <th>Celular</th>
-                  <th>Ciudad</th>
-                  <th>Fecha<br>Notificación</th>
-                  <th>Dirección</th>
-                  <th>Vehiculo<br>Reemplazo</th>
-                  <th>Entrega</th>
-                  <th>Dias<br>prestados</th>
-                  <th>Fecha<br>Devolución</th>
-                  <th>Estado</th>
-                </tr>
-              </tfoot>
-              <tbody>
-                <?php if($registros!=null){  foreach($registros as $registro){  ?>
-                <tr>
-                  <td><?php echo $registro->id ?></td>
-                  <td><?php echo $registro->placa ?></td>
-                  <td><?php echo $registro->asegurado_nombre ?></td>
-                  <td><?php echo $registro->asegurado_id ?></td>
-                  <td><?php echo $registro->declarante_celular ?></td>
-                  <td><?php if(isset($ciudades[$registro->ciudad_siniestro])) {echo $ciudades[$registro->ciudad_siniestro]; } else{$registro->ciudad_siniestro; } ?></td>
-                  <td><?php echo $registro->fec_siniestro ?></td>
-                  <td><?php echo $registro->asegurado_direccion ?></td>
-                  <td><?php echo $rsqlModel->param_relation($lsqlModel->param_relation_like($registro->placa,"placa","linea"),"id","nombre") ?></td>
-                  <td><?php echo $registro->fecha_inicial ?></td>
-                  <td><?php echo $registro->id ?></td>
-                  <td><?php echo $registro->fecha_final ?></td>
-                  <td><?php echo $estados_siniestro[$registro->estado] ?></td>
-                </tr>
-                <?php }} ?>
-              </tbody>
-            </table>
-          </div>
+            <?php include('subviews/report_tableView.php') ?>
+
+
         </div>
         <div class="card-footer small text-muted">Ultimo siniestro el <?php echo $registros[0]->fec_siniestro; ?></div>
       </div>
@@ -157,14 +106,30 @@
     <!-- /.content-wrapper-->
   <?php include('subviews/footer.php') ?>
 
+<script src="//cdn.jsdelivr.net/webshim/1.14.5/polyfiller.js"> </script>
+<script>
+  webshims.setOptions('forms-ext', {types: 'date'});
+  webshims.polyfill('forms forms-ext');
+  $.webshims.formcfg = {
+  en: {
+      dFormat: '-',
+      dateSigns: '-',
+      patterns: {
+          d: "yy-mm-dd"
+      }
+  }
+  };
+
+</script>
 <script>
 
    $( document ).ready(function(){
        $('#registers_table').DataTable({"language": {"url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"}});
-       $(".load_table").show();
+       //$(".load_table").show();
        $(".lds-css").fadeOut(5000, function() {
           //alert("faded out");
         });;
+       $("html, body").animate({ scrollTop:  500}, 600);    
     });
 
    $("#fecha1").click(function(){

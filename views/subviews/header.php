@@ -16,7 +16,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <title>Sistemas de clientes AOA</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -71,7 +71,11 @@
   </style>
 <?php endif  ?>
 
-<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+<body class="fixed-nav sticky-footer bg-dark <?php echo $_SESSION['CURRENT_MENU_STATE']['menu_class'] ?>" id="page-top">
+
+  <?php //print_r($_SESSION['CURRENT_MENU_STATE']); ?>
+
+
   <!-- Navigation-->
   <nav style="background-color: #0B610B!important;" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
     <a class="navbar-brand" href="index.html">AOA administración operativa Automotriz</a>
@@ -82,7 +86,7 @@
       <ul  style="background-color: #97af00!important;" class="navbar-nav navbar-sidenav" id="exampleAccordion">
 
         <li style="background-color:#F5FBEF;">
-          <img  class="responsive normal_pos" id="aoa_image" src="http://www.aoacolombia.com/assets/img/logo.png">
+          <img  class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="aoa_image" src="http://www.aoacolombia.com/assets/img/logo.png">
           <br>
           <br>
         </li>
@@ -116,6 +120,12 @@
             <span class="nav-link-text">Consultas</span>
           </a>
         </li>
+
+        <li style="background-color:#F5FBEF;">
+              <img  class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/desarrollo/<?php echo $_SESSION['ruta_foto'] ?>">
+        
+        </li>
+
       </ul>
 
       <ul style="background-color: #0B610B !important" class="navbar-nav sidenav-toggler">
@@ -130,6 +140,9 @@
         function trigger_transform()
         {
           //alert("transformed");
+
+          $.post( "<?php echo $helper->url("Index","change_menu_state"); ?>",{}, function( data ){});
+
           if($("#aoa_image").hasClass('normal_pos'))
           {
             $("#aoa_image").removeClass('normal_pos');
@@ -145,6 +158,7 @@
       </script>
 
       <ul class="navbar-nav ml-auto">
+        <!--
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-envelope"></i>
@@ -179,6 +193,8 @@
             <a class="dropdown-item small" href="#">View all messages</a>
           </div>
         </li>
+        -->
+        <!--
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-bell"></i>
@@ -234,6 +250,7 @@
             </div>
           </form>
         </li>
+        -->
         <li class="nav-item">
           <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
             <i class="fa fa-fw fa-sign-out"></i>Logout</a>

@@ -52,7 +52,9 @@
 
 <script>
 	function siniester_info(Sini)
-	{
+	{	
+		 window.location="#"; 
+		 $("#idsiniestro").val(Sini);
 		 $.post( "<?php echo $helper->url("Consult","get_services"); ?>",{siniestro:Sini}, function( data ) {
         	$("#ajax-services-content").html(data);
         	$("#myModal").modal('show');
@@ -62,8 +64,39 @@
 
 	$(window).bind('hashchange', function() {
 		var type = window.location.hash.substr(1);
-	 	alert(type);
+		//console.log(type);
+	 	switch(type) {
+		    case "observaciones":
+		        look_for_obs();
+		        break;
+		    case "seguimientos":
+		        look_for_seg();
+		        break;
+		    default:
+		        break
+		}
 	});
+
+	function look_for_obs()
+	{
+		var Sini = $("#idsiniestro").val();
+		 $.post( "<?php echo $helper->url("Consult","get_obs"); ?>",{siniestro:Sini}, function( data ) {
+        	$("#ajax-content-obs").html(data);
+        	$("#myModal2").modal('show');
+        	window.location="#"; 
+    	});
+	}
+
+	function look_for_seg()
+	{
+		var Sini = $("#idsiniestro").val();
+		 $.post( "<?php echo $helper->url("Consult","get_seg"); ?>",{siniestro:Sini}, function( data ) {
+        	$("#ajax-content-seg").html(data);
+        	$("#myModal3").modal('show');
+        	window.location="#"; 
+    	});
+	}
+
 </script>
 
 
@@ -93,9 +126,50 @@
 			      		<div id="ajax-services-content"></div>
 			      	</div>
 		      	</div>
+		      	<input type="hidden" id="idsiniestro" value>
 		      </div>
 		    </div>
+
         </div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Observaciones</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div id="ajax-content-obs"></div>		
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Seguimientos</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+         <div id="ajax-content-seg" class="table-responsive"></div>		
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        

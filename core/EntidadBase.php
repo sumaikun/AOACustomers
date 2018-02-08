@@ -4,107 +4,139 @@ class EntidadBase{
     private $db;
     private $conectar;
  
-    public function __construct($table, $adapter) {
-        $this->table=(string) $table;
-         
-        /*
-        require_once 'Conectar.php';
-        $this->conectar=new Conectar();
-        $this->db=$this->conectar->conexion();
-         */
-        $this->conectar = null;
+    public function __construct($table, $adapter,$model) {
+        $this->table=(string) $table;         
+        $this->model = $model;      
         $this->db = $adapter;
+        $this->sql_manager = new ModeloBase("undefined",$this->db);
     }
      
-    public function getConetar(){
-        return $this->conectar;
-    }
-     
+  
     public function db(){
         return $this->db;
     }
      
     public function getAll(){
-        $resultSet = null;
-        
-        $query=$this->db->query("SELECT * FROM $this->table ORDER BY id DESC");
-          
-        //Devolvemos el resultset en forma de array de objetos
-        while ($row = $query->fetch_object()) {
-           $resultSet[]=$row;
-        }
          
-        return $resultSet;
+        $query=$this->sql_manager->executeSql("SELECT * FROM $this->table ORDER BY id DESC");
+         
+        return $query;
     }
 
     public function getArray($component){
-        $resultSet = null;
         
-        $query=$this->db->query("SELECT id,$component FROM $this->table ORDER BY id DESC");
-          
-        //Devolvemos el resultset en forma de array de objetos
-        while ($row = $query->fetch_object()) {
-           $resultSet[$row->id]=$row->$component;
-        }
-         
-        return $resultSet;   
+        
+        $query=$this->sql_manager->executeSql("SELECT id,$component FROM $this->table ORDER BY id DESC");
+        
+        $array = [];
+
+        foreach($query as $object)
+        {
+            $array[$object->id] = $object->$component;
+        }  
+
+        return $array;   
     }
 
     public function getArrayDefined($component,$idcomponent){
-        $resultSet = null;
         
-        $query=$this->db->query("SELECT $idcomponent,$component FROM $this->table ORDER BY $idcomponent DESC");
+        
+        $query=$this->sql_manager->executeSql("SELECT $idcomponent,$component FROM $this->table ORDER BY $idcomponent DESC");
           
-        //Devolvemos el resultset en forma de array de objetos
-        while ($row = $query->fetch_object()) {
-           $resultSet[$row->$idcomponent]=$row->$component;
-        }
-         
-        return $resultSet;   
+        $array = [];
+
+        foreach($query as $object)
+        {
+            $array[$object->$idcomponent] = $object->$component;
+        }  
+
+        return $array;     
     }
 
     public function orderBy($param,$type="DESC"){
-        $resultSet = null;
         
-        $query=$this->db->query("SELECT * FROM $this->table ORDER BY $param $type");
+        
+        $query=$this->sql_manager->executeSql("SELECT * FROM $this->table ORDER BY $param $type");
           
-        //Devolvemos el resultset en forma de array de objetos
-        while ($row = $query->fetch_object()) {
-           $resultSet[]=$row;
-        }
-         
-        return $resultSet;
+        return $query;
     }
      
     public function getById($id){
-        $resultset = null;
-        $query=$this->db->query("SELECT * FROM $this->table WHERE id=$id");
+        
+        $query=$this->sql_manager->executeSql("SELECT * FROM $this->table WHERE id=$id LIMIT 1");
  
-        if($row = $query->fetch_object()) {
-           $resultSet=$row;
-        }
-         
-        return $resultSet;
+        return $query;
     }
      
     public function getBy($column,$value){
-        $query=$this->db->query("SELECT * FROM $this->table WHERE $column='$value'");
+        $query=$this->sql_manager->executeSql("SELECT * FROM $this->table WHERE $column='$value'");
  
-        while($row = $query->fetch_object()) {
-           $resultSet[]=$row;
-        }
-         
-        return $resultSet;
+        return $query;
     }
      
     public function deleteById($id){
-        $query=$this->db->query("DELETE FROM $this->table WHERE id=$id"); 
+        $query=$this->sql_manager->executeSql("DELETE FROM $this->table WHERE id=$id"); 
         return $query;
     }
      
     public function deleteBy($column,$value){
-        $query=$this->db->query("DELETE FROM $this->table WHERE $column='$value'"); 
+        $query=$this->sql_manager->executeSql("DELETE FROM $this->table WHERE $column='$value'"); 
         return $query;
+    }
+
+     public function save($object)
+    {
+  
+        $sql = "INSERT into $this->table ";
+        $sql .= "(";
+        foreach($this->model as $key => $temp)
+        {
+            $sql .= " ".$key.",";
+        }
+        $sql = substr_replace($sql, "", -1);
+        $sql .= ") VALUES ( ";
+        foreach($this->model as $key => $temp)
+        {
+            $sql .= " '".$object->{'get'.ucfirst($key)}()."',";
+        }
+        $sql = substr_replace($sql, "", -1);
+        $sql .= ")";
+        //echo $sql;
+        //exit;
+        $query=$this->sql_manager->executeSql($sql); 
+        return $query;        
+        
+    }
+    public function update($object)
+    {
+  
+        $sql = "UPDATE $this->table ";
+        $sql .= "SET";
+        foreach($this->model as $key => $temp)
+        {
+            $sql .= " ".$key."='".$object->{'get'.ucfirst($key)}()."',";
+        }
+        $sql = substr_replace($sql, "", -1);
+        $sql .= " WHERE id = ".$object->getId();
+        $query=$this->sql_manager->executeSql($sql); 
+        return $query;     
+     
+    }
+
+
+    public function last_table_id()
+    {
+       //echo "SELECT  max(id) as max from $this->table";
+        $query = $this->sql_manager->executeSql("SELECT  max(id) as max from $this->table");
+        //print_r($query);
+         if($query->max == null)
+        {
+            $id=1;
+        }
+        else{
+            $id = 1+$query->max;
+        }
+        return $id;
     }
      
  

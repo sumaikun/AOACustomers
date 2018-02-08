@@ -28,6 +28,7 @@ class IndexController extends ControladorBase{
 
     public function home(){       
         //Cargamos la vista index y le pasamos valores para generar las gráficas.
+         
         
         if(!isset($_SESSION['id']))
         {
@@ -217,11 +218,20 @@ class IndexController extends ControladorBase{
 
         //datos para select de años.
 
-        $sql = "select min(YEAR(fec_siniestro)) as min_date from siniestro where aseguradora = $aseguradora and fec_siniestro != '0000-00-00';";
+        $sql = "select min(YEAR(fec_siniestro)) as min_date from siniestro where aseguradora = $aseguradora and fec_siniestro != '0000-00-00' LIMIT 1";
 
         $year_min_date = $sqlmodel->executeSql($sql);
 
         $year_min = $year_min_date->min_date; 
+
+
+        if(!isset($_SESSION['CURRENT_MENU_STATE']))
+        {
+            $menu_open = new menu_open();
+            //echo json_encode($menu_open->current_state());
+            //exit;
+            $_SESSION['CURRENT_MENU_STATE'] = $menu_open->current_state();  
+        }
 
         $this->view("index",array("areachartvalues"=>$areachartvalues,"datearray"=>$datearray,"countarray"=>$countarray,
         "bar_labels"=>$bar_labels,"total_month_services"=>$total_month_services,"total_month_siniesters"=>$total_month_siniesters,"countarray2"=>$countarray2,"total_month_services_percent"=>$total_month_services_percent,"total_month_siniesters_percent"=>$total_month_siniesters_percent,
@@ -255,6 +265,12 @@ class IndexController extends ControladorBase{
                 {
                     $_SESSION[$key] = $temp;
                 }
+
+                $modelaseguradora = new Aseguradoras($this->adapter);
+                $aseguradora = $modelaseguradora->getById($_SESSION['aseguradora']);
+
+                $_SESSION['ruta_foto'] = $aseguradora->emblema_f;
+
                 $this->redirect('Index','home');
             }
         }
@@ -323,6 +339,18 @@ class IndexController extends ControladorBase{
     }
 
      
-    
+    public function change_menu_state()
+    {
+        if($_SESSION['CURRENT_MENU_STATE']['menu_class'] == " ")
+        {
+            $menu = new menu_collapse();            
+            $_SESSION['CURRENT_MENU_STATE'] = $menu->current_state(); 
+        }
+        else
+        {
+            $menu = new menu_open();            
+            $_SESSION['CURRENT_MENU_STATE'] = $menu->current_state();
+        }
+    }
  
 }

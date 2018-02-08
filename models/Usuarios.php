@@ -4,7 +4,7 @@ class Usuarios extends EntidadBase{
     private $id;
     private $nombres;
     private $apellidos;
-    private $password;
+    //private $password;
     private $nombre_login;
     private $rol;
     private $email;
@@ -12,7 +12,8 @@ class Usuarios extends EntidadBase{
      
     public function __construct($adapter) {
         $this->table="aoa_clientes.usuarios";
-        parent::__construct($this->table, $adapter);
+        //print_r(get_class_vars(get_class($this)));
+        parent::__construct($this->table, $adapter,get_class_vars(get_class($this)));
     }
      
     public function getId() {
@@ -38,6 +39,8 @@ class Usuarios extends EntidadBase{
     public function setApellidos($apellidos) {
         $this->apellidos = $apellidos;
     }
+
+    /*
  
     public function getPassword() {
         return $this->password;
@@ -45,7 +48,7 @@ class Usuarios extends EntidadBase{
  
     public function setPassword($password) {
         $this->password = $password;
-    }
+    }*/
 
     public function getNombre_Login() {
         return $this->nombre_login;
@@ -80,7 +83,7 @@ class Usuarios extends EntidadBase{
     }    
     
  
-    public function save(){
+    /*public function save(){
         
         $query="INSERT INTO $this->table (nombres,apellidos,nombre_login,rol,email,aseguradora)
                 VALUES('".$this->nombres."',
@@ -111,7 +114,7 @@ class Usuarios extends EntidadBase{
         } 
         //$this->db()->error;
         return $save;
-    }
+    }*/
 
   
     public function set_password($password,$psw_change)
