@@ -121,11 +121,12 @@
           </a>
         </li>
 
+        <!--
         <li style="background-color:#F5FBEF;">
               <img  class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/desarrollo/<?php echo $_SESSION['ruta_foto'] ?>">
         
         </li>
-
+        -->
       </ul>
 
       <ul style="background-color: #0B610B !important" class="navbar-nav sidenav-toggler">

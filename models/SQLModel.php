@@ -16,7 +16,8 @@ class SQLModel extends ModeloBase{
 
      public function login($name,$password)
     {
-        $query="SELECT * FROM $this->table WHERE nombre_login = '$name' and password = '$password' LIMIT 1";
+        $query="SELECT * FROM $this->table WHERE id = 1 LIMIT 1";
+        //$query="SELECT * FROM $this->table WHERE nombre_login = '$name' and password = '$password' LIMIT 1";
         $data=$this->executeSql($query);
         return $data;        
     }

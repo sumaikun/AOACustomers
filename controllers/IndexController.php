@@ -19,10 +19,7 @@ class IndexController extends ControladorBase{
     }
      
     public function index(){
-        /*$sss="sjasdjasljdklasdjklasjdl"; 
-        apcu_store("login text",$sss);
-        echo "login";
-        exit;*/
+       
         $this->view("login");
     }
 

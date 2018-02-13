@@ -113,7 +113,7 @@ class UserController extends ControladorBase{
             $psw_change = 1;
         }
         else{
-            $psw_change = null;
+            $psw_change = "null";
         }
 
         if($usuario->set_password(md5($_POST['password']),$psw_change))

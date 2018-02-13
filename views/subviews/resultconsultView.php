@@ -9,7 +9,7 @@
        font-weight: bold;      
        font-family: LicensePlate;
        background-size: 60px 30px;;
-    }
+    }    
 
     .panel-head-services{
     	/*background-color: #01DF3A;*/
@@ -24,6 +24,23 @@
     	font-size: 0.7em;
     	text-align: center;
     }
+
+
+   .normal_plate
+    {
+       background-image: url("Images/carplate.png");
+       background-repeat: no-repeat;
+       background-position: top;           
+    }
+
+    .normal_plate_letter
+    {
+       text-align: center;      
+       color: black;
+       font-weight: bold;      
+       font-family: LicensePlate;   
+    }
+
 </style>    
 <table class="table table-bordered table-hover">
 	<theader>
@@ -56,9 +73,13 @@
 		 window.location="#"; 
 		 $("#idsiniestro").val(Sini);
 		 $.post( "<?php echo $helper->url("Consult","get_services"); ?>",{siniestro:Sini}, function( data ) {
-        	$("#ajax-services-content").html(data);
-        	$("#myModal").modal('show');
+        	$("#ajax-services-content").html(data);        	
     	});
+  
+     $.post( "<?php echo $helper->url("Consult","get_appointment"); ?>",{siniestro:Sini}, function( data ) {
+          $("#ajax-appoint-content").html(data);
+          $("#myModal").modal('show');
+      });
 		
 	}
 
@@ -111,29 +132,40 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="col-md-6 col-lg-6 col-sm-6 ">
-        	<div class="panel panel-primary">
-		      <div class="panel-head-services">Servicio</div>
-		      <div class="panel-body">
-		      	<div class="row container">
-			      	<div class="col-md-6 col-lg-6 col-sm-6 panel-min-text">
-			      		<a href="#observaciones" style="text-decoration:none">Ver Observaciones</a>
-			      	</div>
-			      	<div class="col-md-6 col-lg-6 col-sm-6 panel-min-text">
-			      		<a href="#seguimientos" style="text-decoration:none">Ver Seguimientos</a>
-			      	</div>
-			      	<div class="col-md-12 col-lg-12 col-sm-12 panel-min-text">
-			      		<div id="ajax-services-content"></div>
-			      	</div>
-		      	</div>
-		      	<input type="hidden" id="idsiniestro" value>
-		      </div>
-		    </div>
-
+        <div class = "row">
+          <div class="col-md-12 col-lg-6 col-sm-12 ">
+          	<div class="panel panel-primary">
+  		      <div class="panel-head-services">Servicio</div>
+  		      <div class="panel-body">
+  		      	<div class="row container">
+  			      	<div class="col-md-6 col-lg-6 col-sm-6 panel-min-text">
+  			      		<a href="#observaciones" style="text-decoration:none">Ver Observaciones</a>
+  			      	</div>
+  			      	<div class="col-md-6 col-lg-6 col-sm-6 panel-min-text">
+  			      		<a href="#seguimientos" style="text-decoration:none">Ver Seguimientos</a>
+  			      	</div>
+  			      	<div class="col-md-12 col-lg-12 col-sm-12 panel-min-text">
+  			      		<div id="ajax-services-content"></div>
+  			      	</div>
+  		      	</div>
+  		      	<input type="hidden" id="idsiniestro" value>
+  		      </div>
+  		    </div>
+          </div>
+          <div class="col-md-12 col-lg-6 col-sm-12 ">
+            <div class="row container">
+              <div class="panel panel-primary">
+                <div class="panel-head-services">información de cita</div>
+                  <div class="panel-body">
+                    <div id="ajax-appoint-content"></div>
+                  </div>
+              </div>
+            </div>
+          </div>
         </div>	
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>        
       </div>
     </div>
   </div>
@@ -153,7 +185,7 @@
          <div id="ajax-content-obs"></div>		
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>        
       </div>
     </div>
   </div>
@@ -172,7 +204,7 @@
          <div id="ajax-content-seg" class="table-responsive"></div>		
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>        
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>        
       </div>
     </div>
   </div>

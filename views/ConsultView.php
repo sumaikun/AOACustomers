@@ -65,9 +65,11 @@
                 </div> 
               </form>
             </div>
-            <div id="ajax-content">
+            <div class="table-responsive">
+              <div id="ajax-content">
 
-            </div>
+              </div>
+          </div>
         </div>
       </div>
     </div>

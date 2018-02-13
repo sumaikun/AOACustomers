@@ -126,10 +126,30 @@ class ConsultController extends ControladorBase{
          from seguimiento_hst s,tipo_seguimiento t where s.siniestro=$siniestro and s.tipo=t.id 
          order by fecha,hora";
 
-         $seguimientos = $sqlmodel->executeSql($query,false);
+         $seguimientos = $sqlmodel->executeSql($query);
          
          echo $this->view('subviews/segfromresultconsult',compact("seguimientos"));
-  } 
+    }
+
+    public function get_appointment()
+    {
+        if($_SESSION['rol'] != 1){
+            $secure_data .=" and  aseguradora = '".$_SESSION['aseguradora']."' ";   
+         }
+         else
+         {
+            $secure_data = " ";  
+         }
+
+         $siniestro = $_POST["siniestro"];
+         $sqlmodel = new SQLModel('undefined',$this->adapter);
+         
+         $query = "Select * from aoacol_aoacars.cita_servicio where siniestro = '$siniestro' and estado = 'C' order by id desc LIMIT 1";
+
+         $cita = $sqlmodel->executeSql($query);
+         
+         echo $this->view('subviews/citafromresultconsult',compact("cita"));
+    }  
     
  
 }
