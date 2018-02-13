@@ -20,7 +20,7 @@ class IndexController extends ControladorBase{
      
     public function index(){
        
-        $this->view("login");
+        $this->view("Login");
     }
 
     public function home(){       
