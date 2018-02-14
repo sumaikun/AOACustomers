@@ -239,10 +239,14 @@ class IndexController extends ControladorBase{
     public function login()
     {
         $password = hash('ripemd160',md5($_POST['password']));
-        //echo "contraseña ingresada ".$password;
-        //exit;
+      
         $sqlmodel = new SQLModel("aoa_clientes.usuarios",$this->adapter);
         $user = $sqlmodel->login($_POST['name_login'],$password);
+
+        //print_r($user);
+
+        //exit;
+
         if($user == null)
         {
             $this->message->warning('El usuario no existe o escribio mal sus credenciales');
