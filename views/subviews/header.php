@@ -78,7 +78,7 @@
 
   <!-- Navigation-->
   <nav style="background-color: #0B610B!important;" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">AOA administración operativa Automotriz</a>
+    <a class="navbar-brand" href="<?php echo $helper->url("index","home"); ?>">AOA administración operativa Automotriz</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -92,7 +92,7 @@
         </li>
 
         <?php if($_SESSION['rol']==1): ?>
-        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Link">
+        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Usuarios">
           <a style="color:white; "  class="nav-link" href="<?php echo $helper->url("User","index"); ?>">
             <i class="fa fa-fw fa-user"></i>
             <span  class="nav-link-text">Usuarios</span>
@@ -100,21 +100,21 @@
         </li>
        <?php endif ?>
 
-        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Dashboard">
+        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Tablero">
           <a style="color:white;" class="nav-link" href="<?php echo $helper->url("index","home"); ?>">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">Tablero</span>
           </a>
         </li>
      
-        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Tables">
+        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Reportes">
           <a style="color:white;" class="nav-link" href="<?php echo $helper->url("Report"); ?>">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">Reportes</span>
           </a>
         </li>      
      
-        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Link">
+        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Consultas">
           <a style="color:white;" class="nav-link" href="<?php echo $helper->url("Consult"); ?>">
             <i class="fa fa-fw fa-link"></i>
             <span class="nav-link-text">Consultas</span>
