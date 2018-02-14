@@ -40,14 +40,26 @@ class ConsultController extends ControladorBase{
 
         if(!empty($_POST['placa']))
         {
-            $conditionwhere .="placa = '".$_POST['placa']."' ";
+            if($conditionwhere!=" ")
+            {
+                $conditionwhere .= " and ";
+            }
+            $conditionwhere .="placa = '".$_POST['placa']."'  ";
         }
         if(!empty($_POST['poliza']))
         {
-            $conditionwhere .="numero = '".$_POST['poliza']."' ";
+            if($conditionwhere!=" ")
+            {
+                $conditionwhere .= " and ";
+            }
+            $conditionwhere .="numero = '".$_POST['poliza']."'  ";
         }
         if(!empty($_POST['cedula']))
         {
+            if($conditionwhere!=" ")
+            {
+                $conditionwhere .= " and ";
+            }
             $conditionwhere .="asegurado_id = '".$_POST['cedula']."'  ";
         }
         $query = "Select * from aoacol_aoacars.siniestro  where $conditionwhere ";
@@ -82,7 +94,8 @@ class ConsultController extends ControladorBase{
          $query = "select c.*,o.nombre as noficina,ec.nombre as nestado,c.estadod,ec.color_co
          from cita_servicio c,estado_citas ec,oficina o, siniestro s where c.siniestro = $siniestro and c.oficina=o.id and 
          c.estado=ec.codigo and s.id = c.siniestro ".$secure_data." order by c.fecha,c.hora,c.id";
-         $servicios = $sqlmodel->executeSql($query,false);
+         echo $query;
+         $servicios = $sqlmodel->executeSql($query);
          echo $this->view('subviews/servicesfromresultconsult',compact("servicios"));        
     } 
 

@@ -290,16 +290,10 @@ class IndexController extends ControladorBase{
             $this->redirect('Index');   
         }
 
-
-
         $password_prev = hash('ripemd160',md5($_POST['password_prev']));
-        $password = md5($_POST['password']);
+        $password = md5($_POST['password']);        
 
-        //print_r($_POST);
 
-        //echo $password_prev;
-
-        
 
         if($password_prev == $password)
         {
@@ -309,26 +303,29 @@ class IndexController extends ControladorBase{
 
         $sqlmodel = new SQLModel("aoa_clientes.usuarios",$this->adapter);
         $user = $sqlmodel->getOne('id',$_SESSION['pre_session_user']);
-        //echo "prev :".$password_prev;
-        //echo "<br>"; 
-        //echo "user ".$user->password;
-        //exit;
+ 
         if($password_prev != $user->password)
         {
             $this->message->warning('La contraseña previa no corresponde intentelo nuevamente');
             $this->redirect('Index','view_changepsw');
         }
-        else{
+        else
+        {
+
             $usuario = new Usuarios($this->adapter);
-            $usuario->setId(apcu_fetch('pre_session_user'));
+            $usuario->setId($_SESSION['pre_session_user']);
             $usuario->set_password($password,"null");
-            //session_start();
+           
             foreach($user as $key=>$temp)
             {
                 $_SESSION[$key] = $temp;
             }
-            //echo "login";
-            //print_r($_SESSION);
+
+            $modelaseguradora = new Aseguradoras($this->adapter);
+            $aseguradora = $modelaseguradora->getById($_SESSION['aseguradora']);
+
+            $_SESSION['ruta_foto'] = $aseguradora->emblema_f;
+    
             $this->redirect('Index','home'); 
         }
     }

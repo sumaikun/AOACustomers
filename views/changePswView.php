@@ -28,7 +28,7 @@
       <div class="card-body">
         <form method="post" onsubmit="return check_passwords()" action="<?php echo $helper->url("index","change_password"); ?>">         
           <div class="form-group">
-            <label for="exampleInputPassword1">Contraseña</label>
+            <label for="exampleInputPassword1">Contraseña anterior</label>
             <input class="form-control" id="exampleInputPassword1" name="password_prev" type="password" placeholder="Contraseña" required>
           </div>
           <div class="form-group">
