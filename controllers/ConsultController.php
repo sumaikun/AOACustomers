@@ -94,7 +94,7 @@ class ConsultController extends ControladorBase{
          $query = "select c.*,o.nombre as noficina,ec.nombre as nestado,c.estadod,ec.color_co
          from cita_servicio c,estado_citas ec,oficina o, siniestro s where c.siniestro = $siniestro and c.oficina=o.id and 
          c.estado=ec.codigo and s.id = c.siniestro ".$secure_data." order by c.fecha,c.hora,c.id";
-         echo $query;
+         //echo $query;
          $servicios = $sqlmodel->executeSql($query);
          echo $this->view('subviews/servicesfromresultconsult',compact("servicios"));        
     } 

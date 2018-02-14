@@ -159,7 +159,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
         </form>
@@ -216,7 +216,7 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary">Editar</button>
           </div>
         </form>
@@ -251,7 +251,7 @@
             </div>             
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             <button type="submit" class="btn btn-primary">Asignar</button>
           </div>
         </form>
@@ -269,6 +269,8 @@
     function check_passwords()
     {
 
+      var errors = [];
+
       psw1 = $("input[name='password']").val();
       psw2 = $("input[name='password2']").val();
       
@@ -276,28 +278,62 @@
       re = /[A-Z]/;
      
       if(!re.test(psw1)) {
-        alert("Error: La contraseña debe tener al menos una mayuscula (A-Z)!");        
-        return false;
+        errors.push("La contraseña debe tener al menos una mayuscula (A-Z)!");        
+   
       }
+
+      re = /[a-z]/;
+     
+      if(!re.test(psw1)) {
+        errors.push("La contraseña debe tener al menos una minuscula (a-z)!");        
+   
+      }
+
       re = /[0-9]/;
 
       if(!re.test(psw1)) {
-        alert("Error: La contraseña debe tener al menos un numero!");      
-        return false;
+        errors.push("La contraseña debe tener al menos un numero!");      
+   
       }
+
+      re = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+      if(!re.test(psw1)) {
+        errors.push("La contraseña debe tener al menos un caracter especial!");      
+   
+      }      
 
       if(psw1.length < 7)
       {
-        alert("Error: La contraseña debe tener al menos 7 digitos!");      
-        return false; 
+        errors.push("La contraseña debe tener al menos 7 digitos!");      
+    
       }
 
       if(psw1 != psw2)
       {
-        alert("Error: No escribio contraseñas iguales!");      
-        return false;
-      }        
+        errors.push("No escribio contraseñas iguales!");      
+   
+      }
+
+      //alert(errors.length);
+
+      if(errors.length == 0)
+      {
         return true;
+      }
+      else
+      {
+         errors_string = "";
+
+        errors.forEach(function(element) {
+            errors_string += element+"\n" ;
+        });
+
+        alert(errors_string);
+
+        return false;
+      }  
+        
       
     }
   </script>

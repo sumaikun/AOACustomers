@@ -254,7 +254,16 @@ class IndexController extends ControladorBase{
         }
         else
         {
-            if($user->psw_change != null)
+        
+
+            $update = date($user->updated);
+            $current_date = date('Y-m-d H:m:s');
+            $date1=date_create($update);
+            $date2=date_create($current_date);
+            $diff=date_diff($date1,$date2);
+
+
+            if($user->psw_change != null or $diff->d>30)
             {
                 //apcu_store('pre_session_user', $user->id);
                 $_SESSION['pre_session_user'] = $user->id;

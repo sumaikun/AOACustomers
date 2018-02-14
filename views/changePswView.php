@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <title>Cambio de contraseña</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
@@ -51,7 +51,8 @@
   <!-- Core plugin JavaScript-->
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
   <script>
-     function check_passwords()
+
+    function check_passwords()
     {
 
       psw1 = $("input[name='password']").val();
@@ -61,30 +62,64 @@
       re = /[A-Z]/;
      
       if(!re.test(psw1)) {
-        alert("Error: La contraseña debe tener al menos una mayuscula (A-Z)!");        
-        return false;
+        errors.push("La contraseña debe tener al menos una mayuscula (A-Z)!");        
+   
       }
+
+       re = /[a-z]/;
+     
+      if(!re.test(psw1)) {
+        errors.push("La contraseña debe tener al menos una minuscula (a-z)!");        
+   
+      }
+
       re = /[0-9]/;
 
       if(!re.test(psw1)) {
-        alert("Error: La contraseña debe tener al menos un numero!");      
-        return false;
+        errors.push("La contraseña debe tener al menos un numero!");      
+   
       }
+
+      re = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/;
+
+      if(!re.test(psw1)) {
+        errors.push("La contraseña debe tener al menos un caracter especial!");      
+   
+      }      
 
       if(psw1.length < 7)
       {
-        alert("Error: La contraseña debe tener al menos 7 digitos!");      
-        return false; 
+        errors.push("La contraseña debe tener al menos 7 digitos!");      
+    
       }
 
       if(psw1 != psw2)
       {
-        alert("Error: No escribio contraseñas iguales!");      
-        return false;
-      }        
+        errors.push("No escribio contraseñas iguales!");      
+   
+      }
+
+      //alert(errors.length);
+
+      if(errors.length == 0)
+      {
         return true;
+      }
+      else
+      {
+         errors_string = "";
+
+        errors.forEach(function(element) {
+            errors_string += element+"\n" ;
+        });
+
+        alert(errors_string);
+
+        return false;
+      }  
       
     }
+    
   </script>
 </body>
 

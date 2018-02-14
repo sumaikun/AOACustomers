@@ -252,9 +252,12 @@
           </form>
         </li>
         -->
-        <li class="nav-item">
+         <span class="pull-right" style="margin-top: 0.4em; color:white"> 
+           <?php echo $_SESSION['nombres']." ".$_SESSION['apellidos']; ?>
+         </span>
+        <li class="nav-item">          
           <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+            <i class="fa fa-fw fa-sign-out"></i>Cerrar sesión</a>
         </li>
       </ul>
     </div>

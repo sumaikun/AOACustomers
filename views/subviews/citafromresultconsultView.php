@@ -2,7 +2,7 @@
 <div class="normal_plate" style="width:22em; height:15em;" ></div>
 <div class="normal_plate_letter" style="margin-top: -2.6em; font-size: 5em;" ><?php if($cita != null){ echo $cita->placa; }  ?></div>
 <br>
-<table class="table table-striped">
+<table class="table table-striped" <?php if(!isset($cita->placa)):  ?> style="margin-top:8em"  <?php endif ?> >
 	<tr>
 		<td style="font-weight: bold; font-size: 0.7em;">Fecha</td>
 		<td style="font-weight: bold; font-size: 0.7em;">
