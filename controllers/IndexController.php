@@ -191,9 +191,9 @@ class IndexController extends ControladorBase{
         {
             $percent1 =  ceil(($data1->count*100)/$total_count)."% ";
 
-            //$percent2 =  ceil(($data2->count*100)/$total_count)."% ";
+            $percent2 =  ceil(($data2->count*100)/$total_count)."% ";
 
-            $percent2 = 100-$percent1."% ";
+            //$percent2 = 100-$percent1."% ";
         }
         else
         {
