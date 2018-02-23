@@ -42,8 +42,18 @@
     margin-left: -0.7em !important;
     max-width: 10em !important;
     height: 2.6em !important;
-    margin-top: 2em !important;
+   
     
+  }
+
+   .first_label_normal
+  {
+     /*margin-top: 1.4em !important;*/
+  }
+
+  .first_label_collapse
+  {
+    margin-top: 2em !important;
   }
 
   .normal_pos{
@@ -51,6 +61,18 @@
     height: 125px;
     margin-top: 15px;
   }
+
+  .second_label_normal
+  {
+     margin-top: 1.4em !important;
+  }
+
+  .second_label_collapse
+  {
+     margin-top: 10em !important;
+     height: 75px !important;
+  }
+
 </style>
 
 <?php if($wsafari): ?>
@@ -120,13 +142,10 @@
             <span class="nav-link-text">Consultas</span>
           </a>
         </li>
-
-        <!--
-        <li style="background-color:#F5FBEF;">
-              <img  class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/desarrollo/<?php echo $_SESSION['ruta_foto'] ?>">
-        
-        </li>
-        -->
+         
+        <li style="background-color:#F5FBEF;" id="second-image">         
+              <img style="margin-top: 0.8em;" class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/desarrollo/<?php echo $_SESSION['ruta_foto'] ?>">        
+        </li>       
       </ul>
 
       <ul style="background-color: #0B610B !important" class="navbar-nav sidenav-toggler">
@@ -137,7 +156,8 @@
         </li>
       </ul>
 
-      <script>
+      <script>    
+
         function trigger_transform()
         {
           //alert("transformed");
@@ -146,13 +166,24 @@
 
           if($("#aoa_image").hasClass('normal_pos'))
           {
+            $("#aoa_image").addClass("first_label_collapse");
             $("#aoa_image").removeClass('normal_pos');
-            $("#aoa_image").addClass('rotate90');  
+            $("#aoa_image").addClass('rotate90');
+            $("#otheremp_image").removeClass('normal_pos');
+            $("#otheremp_image").addClass('rotate90');
+            $("#second-image").removeClass("second_label_normal");      
+            $("#second-image").addClass("second_label_collapse");
+            
           }
           else
-          {
+          {         
             $("#aoa_image").removeClass('rotate90');
-            $("#aoa_image").addClass('normal_pos'); 
+            $("#aoa_image").addClass('normal_pos');
+            $("#otheremp_image").removeClass('rotate90');
+            $("#otheremp_image").addClass('normal_pos');
+            $("#aoa_image").removeClass("first_label_collapse");
+            $("#second-image").removeClass("second_label_collapse");
+            $("#second-image").addClass("second_label_normal");   
           }
           
         }

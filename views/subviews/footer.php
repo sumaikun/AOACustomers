@@ -45,4 +45,26 @@
  
 </body>
 
+   <script>
+    extra_front_check();        
+
+    function extra_front_check()
+    {
+        if($("#otheremp_image").hasClass('rotate90'))
+        {  
+           $("#second-image").removeClass("second_label_normal");      
+           $("#second-image").addClass("second_label_collapse");
+        }
+        else{
+          $("#second-image").removeClass("second_label_collapse");
+          $("#second-image").addClass("second_label_normal");
+        }
+
+        if($("#aoa_image").hasClass('rotate90'))
+        {
+          $("#aoa_image").addClass("first_label_collapse"); 
+        }
+    }
+ </script>
+
 </html>

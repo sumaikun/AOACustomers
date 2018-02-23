@@ -230,9 +230,56 @@ class IndexController extends ControladorBase{
             $_SESSION['CURRENT_MENU_STATE'] = $menu_open->current_state();  
         }
 
+        $sql = "SELECT max_days_month FROM aseguradora WHERE id = $aseguradora LIMIT 1";
+      
+        $data3 = $sqlmodel->executeSql($sql);  
+
+        $max_month_days = $data3->max_days_month;
+        //print_r($data3);
+
+        //exit; 
+
+        $first_day_period = date('Y-m-01');
+
+        $first_next_period = date("Y-m-d", strtotime(date('m', strtotime('+1 month')).'/01/'.date('Y').' 00:00:00'));
+
+        $total_days = date("t");
+
+        $last_day_period = date('Y-m')."-".$total_days;
+
+        //exit;
+
+        $current_days = 0;
+
+        //fechas que inician y terminan en el periodo
+
+        $query = 'select  sum(datediff(fecha_final,fecha_inicial)) as diff  from siniestro where fecha_inicial >= "'.$first_day_period.'" and fecha_final<= "'.$first_next_period.'" and aseguradora = "'.$aseguradora.'"  LIMIT 1';
+         
+     
+        $cdata = $sqlmodel->executeSql($query);
+
+        $current_days += $cdata->diff;  
+        //terminan en el periodo
+        $query = 'select sum(datediff(fecha_final,"'.$first_day_period.'")) as diff  from siniestro where fecha_inicial < "'.$first_day_period.'" and fecha_final >= "'.$first_day_period.'" and fecha_final < "'.$first_next_period.'" and aseguradora = "'.$aseguradora.'" LIMIT 1';
+
+        $cdata = $sqlmodel->executeSql($query);
+
+        $current_days += $cdata->diff;
+
+        //no han terminado en el periodo
+        $query = 'select sum(datediff("'.$last_day_period.'",fecha_inicial)) as diff  from siniestro where fecha_inicial > "'.$first_day_period.'" and fecha_final> "'.$first_next_period.'" and aseguradora = "'.$aseguradora.'" LIMIT 1';
+
+        $cdata = $sqlmodel->executeSql($query);
+
+        $current_days += $cdata->diff;
+
+        //echo $current_days;
+
+        //exit;
+
         $this->view("index",array("areachartvalues"=>$areachartvalues,"datearray"=>$datearray,"countarray"=>$countarray,
         "bar_labels"=>$bar_labels,"total_month_services"=>$total_month_services,"total_month_siniesters"=>$total_month_siniesters,"countarray2"=>$countarray2,"total_month_services_percent"=>$total_month_services_percent,"total_month_siniesters_percent"=>$total_month_siniesters_percent,
-        "year_siniesters"=>$year_siniesters,"aseguradoras"=>$aseguradoras,"max_bar"=>$max_bar,"max_area"=>$max_area,"saseguradora"=>$aseguradora,"year_min"=>$year_min,"post"=>$_POST,"year_labels"=>$year_labels));
+        "year_siniesters"=>$year_siniesters,"aseguradoras"=>$aseguradoras,"max_bar"=>$max_bar,"max_area"=>$max_area,"saseguradora"=>$aseguradora,"year_min"=>$year_min,"post"=>$_POST,"year_labels"=>$year_labels,"max_month_days"=>$max_month_days,"current_days"=>$current_days));
     }
 
 

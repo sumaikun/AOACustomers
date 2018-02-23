@@ -49,19 +49,22 @@
             <div class="container text-center">
               <form onsubmit="return fake_form()">
                 <div class="form-group">
-                  <label class="form-control">Placa</label>
-                  <input type="text" style="text-align: center;" class="form-control" id="placa"  maxlength="6" autocomplete="off">
+                  <strong><label >Placa</label></strong>
+                  <br>
+                  <input type="text" style="text-align: center;"  id="placa"  maxlength="6" autocomplete="off">
                 </div>
                 <div class="form-group">
-                  <label class="form-control">Cedula</label>
-                  <input type="text" id="cedula" class="form-control" onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" style="text-align: center;"  maxlength="10" autocomplete="off">
+                  <strong><label>Cedula</label></strong>
+                  <br>
+                  <input type="text" id="cedula"  onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" style="text-align: center;"  maxlength="10" autocomplete="off">
                 </div>  
                 <div class="form-group">
-                  <label class="form-control">Poliza</label>
-                  <input type="text" id="poliza" style="text-align: center;" maxlength="30" class="form-control" autocomplete="off">
+                  <strong><label >Poliza</label></strong>
+                  <br>
+                  <input type="text" id="poliza" style="text-align: center;" maxlength="30"  autocomplete="off">
                 </div>
                 <div class="form-group">
-                  <button class="btn btn-success form-control" onclick="consult_data()">Consultar</button>
+                  <button class="btn btn-success" onclick="consult_data()">Consultar</button>
                 </div> 
               </form>
             </div>
