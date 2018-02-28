@@ -59,8 +59,12 @@
           <div class="form-group">
             <label for="exampleInputPassword1">Contraseña</label>
             <input class="form-control" id="exampleInputPassword1" name="password" type="password" placeholder="Contraseña" required>
-          </div>          
+          </div>
+           <?php if($_SERVER['HTTP_HOST']=="sac.aoacolombia.com"){  ?>          
           <button class="btn log_btn g-recaptcha btn-block" data-sitekey="6LfQe0kUAAAAAIEhjVXl923H36LApinBbkz-eXww" data-callback='onSubmit' type="submit">Entrar</button>
+           <?php } else{  ?>
+           <button class="btn log_btn  btn-block"  type="submit">Entrar</button>
+           <?php } ?>
         </form>
      
       </div>
