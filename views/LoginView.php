@@ -42,12 +42,15 @@
     <div class="card card-login mx-auto mt-5">
       <div class="card-header" style="background-color: #0B610B!important;">Login</div>
       <div class="card-body" style="background-color: #97af00!important;">
+        <?php if($_SERVER['HTTP_HOST']=="sac.aoacolombia.com"): ?>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
          <script>
            function onSubmit(token) {
              document.getElementById("demo-form").submit();
            }
          </script>
+        <?php endif ?>
+
         <form method="post" action="<?php echo $helper->url("index","login"); ?>">
           <div class="form-group">
             <label for="exampleInputEmail1">Usuario</label>
