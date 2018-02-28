@@ -57,7 +57,7 @@
             <label for="exampleInputPassword1">Contraseña</label>
             <input class="form-control" id="exampleInputPassword1" name="password" type="password" placeholder="Contraseña" required>
           </div>          
-          <button class="btn log_btn g-recaptcha btn-block" data-sitekey="6LfWLiUTAAAAABMwEwNpKgKrta-HGtZ1OzWnWgMj" data-callback='onSubmit' type="submit">Entrar</button>
+          <button class="btn log_btn g-recaptcha btn-block" data-sitekey="6LfQe0kUAAAAAIEhjVXl923H36LApinBbkz-eXww" data-callback='onSubmit' type="submit">Entrar</button>
         </form>
      
       </div>
