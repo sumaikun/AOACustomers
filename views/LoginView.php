@@ -7,23 +7,47 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin - Start Bootstrap Template</title>
+  <link rel="shortcut icon" type="image/png" href="http://www.aoacolombia.com/assets/img/logo_footer.png" />
+  <title>SACAP AOA</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
   <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
+  <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 
-<body class="bg-dark">
+<body class="">
+  <style>
+    .btn:hover{
+      background-color: #0B610B!important;
+    }
+    .log_btn{
+       background-color: #0A0A2A !important; border-color: #0A0A2A; color:white;
+    }
+  </style>
   <div class="container">
     <?php
         $msg->display();
+       echo  $_SERVER['HTTP_HOST'];
     ?>
+    <br>
+    <br>
+    <div class="text-center">
+      <image src="http://www.aoacolombia.com/assets/img/logo.png" class="img-responsive center-block">
+    </image>
+      <br>
+      <br>
     <div class="card card-login mx-auto mt-5">
-      <div class="card-header">Login</div>
-      <div class="card-body">
+      <div class="card-header" style="background-color: #0B610B!important;">Login</div>
+      <div class="card-body" style="background-color: #97af00!important;">
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+         <script>
+           function onSubmit(token) {
+             document.getElementById("demo-form").submit();
+           }
+         </script>
         <form method="post" action="<?php echo $helper->url("index","login"); ?>">
           <div class="form-group">
             <label for="exampleInputEmail1">Usuario</label>
@@ -32,9 +56,8 @@
           <div class="form-group">
             <label for="exampleInputPassword1">Contraseña</label>
             <input class="form-control" id="exampleInputPassword1" name="password" type="password" placeholder="Contraseña" required>
-          </div>
-          
-          <button class="btn btn-primary btn-block" type="submit">Login</button>
+          </div>          
+          <button class="btn log_btn g-recaptcha btn-block" data-sitekey="6LfWLiUTAAAAABMwEwNpKgKrta-HGtZ1OzWnWgMj" data-callback='onSubmit' type="submit">Entrar</button>
         </form>
      
       </div>

@@ -19,7 +19,7 @@
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div class="modal-body">Selecciona "Logout" para terminar tu sesión actual.</div>
+          <div class="modal-body">Selecciona "cerrar sesión" para terminar tu sesión actual.</div>
           <div class="modal-footer">
             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
             <a class="btn btn-primary" href="<?php echo $helper->url("index","logout"); ?>">Cerrar Sesión</a>
