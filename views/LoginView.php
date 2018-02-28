@@ -30,7 +30,7 @@
   <div class="container">
     <?php
         $msg->display();
-       echo  $_SERVER['HTTP_HOST'];
+       //echo  $_SERVER['HTTP_HOST'];
     ?>
     <br>
     <br>
@@ -40,7 +40,7 @@
       <br>
       <br>
     <div class="card card-login mx-auto mt-5">
-      <div class="card-header" style="background-color: #0B610B!important;">Login</div>
+      <div class="card-header" style="background-color: #0B610B!important;">Inicio de sesión</div>
       <div class="card-body" style="background-color: #97af00!important;">
         <?php if($_SERVER['HTTP_HOST']=="sac.aoacolombia.com"): ?>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
