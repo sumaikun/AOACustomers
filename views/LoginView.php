@@ -46,12 +46,12 @@
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
          <script>
            function onSubmit(token) {
-             document.getElementById("demo-form").submit();
+             document.getElementById("login_form").submit();
            }
          </script>
         <?php endif ?>
 
-        <form method="post" action="<?php echo $helper->url("index","login"); ?>">
+        <form method="post" id="login_form" action="<?php echo $helper->url("index","login"); ?>">
           <div class="form-group">
             <label for="exampleInputEmail1">Usuario</label>
             <input class="form-control" id="exampleInputEmail1" type="text" autocomplete="off" aria-describedby="emailHelp" placeholder="Usuario de login" name='name_login' maxlength="40" requried>
