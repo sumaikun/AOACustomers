@@ -64,13 +64,13 @@
 
   .second_label_normal
   {
-     margin-top: 1.4em !important;
+     /*margin-top: 1.4em !important;*/
   }
 
   .second_label_collapse
   {
-     margin-top: 10em !important;
-     height: 75px !important;
+     /*margin-top: 10em !important;
+     height: 75px !important;*/
   }
 
 </style>
@@ -143,8 +143,9 @@
           </a>
         </li>
          
-        <li style="background-color:#F5FBEF;" id="second-image">         
-              <img style="margin-top: 0.8em;" class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/desarrollo/<?php echo $_SESSION['ruta_foto'] ?>">        
+        <li style="background-color:#97af00; background-image: url('http://app.aoacolombia.com/Control/operativo/<?php echo $_SESSION['ruta_foto'] ?>'); background-repeat: no-repeat; background-size: 100%; height:165px;" id="second-image">
+                  
+              <!--<img style="margin-top: 0.8em;" class="responsive <?php //echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/operativo/<?php //echo $_SESSION['ruta_foto'] ?>">-->        
         </li>       
       </ul>
 
@@ -171,8 +172,8 @@
             $("#aoa_image").addClass('rotate90');
             $("#otheremp_image").removeClass('normal_pos');
             $("#otheremp_image").addClass('rotate90');
-            $("#second-image").removeClass("second_label_normal");      
-            $("#second-image").addClass("second_label_collapse");
+            //$("#second-image").removeClass("second_label_normal");      
+            //$("#second-image").addClass("second_label_collapse");
             
           }
           else
@@ -182,8 +183,8 @@
             $("#otheremp_image").removeClass('rotate90');
             $("#otheremp_image").addClass('normal_pos');
             $("#aoa_image").removeClass("first_label_collapse");
-            $("#second-image").removeClass("second_label_collapse");
-            $("#second-image").addClass("second_label_normal");   
+            //$("#second-image").removeClass("second_label_collapse");
+            //$("#second-image").addClass("second_label_normal");   
           }
           
         }
