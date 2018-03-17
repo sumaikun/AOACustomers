@@ -1,5 +1,7 @@
 <?php
+namespace views\HtmlStates;
 
+use views\HtmlStates\Interfaces\menu_state;
 
 	class menu_collapse implements menu_state	
 	{

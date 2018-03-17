@@ -114,11 +114,19 @@
         </li>
 
         <?php if($_SESSION['rol']==1): ?>
-        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Usuarios">
-          <a style="color:white; "  class="nav-link" href="<?php echo $helper->url("User","index"); ?>">
-            <i class="fa fa-fw fa-user"></i>
-            <span  class="nav-link-text">Usuarios</span>
+        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Adminsitración">
+          <a style="color:white;" class="nav-link" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion" aria-expanded="false">
+            <i class="fa fa-fw fa-wrench"></i>
+            <span class="nav-link-text">Administración</span>
           </a>
+          <ul class="sidenav-second-level collapse" id="collapseComponents" style="">
+            <li>
+              <a href="<?php echo $helper->url("User","index"); ?>">Usuarios</a>
+            </li>
+            <li>
+              <a href="<?php echo $helper->url("Tool","entities"); ?>">Aseguradoras</a>
+            </li>
+          </ul>        
         </li>
        <?php endif ?>
 
@@ -142,6 +150,8 @@
             <span class="nav-link-text">Consultas</span>
           </a>
         </li>
+
+
          
         <li style="background-color:#97af00; background-image: url('http://app.aoacolombia.com/Control/operativo/<?php echo $_SESSION['ruta_foto'] ?>'); background-repeat: no-repeat; background-size: 100%; height:165px;" id="second-image">
                   

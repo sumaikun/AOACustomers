@@ -1,10 +1,12 @@
 <?php
+namespace core;
+use config\Database;
 class Conectar{
     private $driver;
     private $host, $user, $pass, $database, $charset;
    
     public function __construct() {
-        $db_cfg = require_once 'config/Database.php';
+        $db_cfg = Database::get_aoa_config();
         $this->driver=$db_cfg["driver"];
         $this->host=$db_cfg["host"];
         $this->user=$db_cfg["user"];
@@ -16,7 +18,7 @@ class Conectar{
     public function conexion(){
          
         if($this->driver=="mysql" || $this->driver==null){
-            $con=new mysqli($this->host, $this->user, $this->pass, $this->database);
+            $con=new \mysqli($this->host, $this->user, $this->pass, $this->database);
             $con->query("SET NAMES '".$this->charset."'");
         }
          

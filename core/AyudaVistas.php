@@ -1,4 +1,6 @@
 <?php
+namespace core;
+
 class AyudaVistas{
      
     public function url($controlador=CONTROLADOR_DEFECTO,$accion=ACCION_DEFECTO){

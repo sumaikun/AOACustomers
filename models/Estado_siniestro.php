@@ -1,4 +1,6 @@
 <?php
+namespace models;
+use core\EntidadBase;
 class Estado_siniestro extends EntidadBase{   
      
     public function __construct($adapter) {

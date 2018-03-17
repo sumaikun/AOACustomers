@@ -1,21 +1,51 @@
-
 <?php
+namespace controllers;
 
-class IndexController extends ControladorBase{
+use core\ControladorBase;
+use Containers\EntidadesAseguradoras;
+use Observable\Subject as Subject;
+use Observable\Observer as Observer;
+use libraries\FlashMessages;
+use core\Conectar;
+use models\Aseguradoras;
+use models\SQLModel;
+use views\HtmlStates\menu_open;
+use views\HtmlStates\menu_collapse;
+
+class IndexController extends ControladorBase implements Subject, Observer{
      
     public $conectar;
-    public $adapter;
-    
+    public $adapter;    
+  
      
     public function __construct() {
 
-        parent::__construct();
-        
-        require 'libraries/FlashMessages.php';  
+        parent::__construct();       
+    
         $this->conectar=new Conectar();
         $this->adapter=$this->conectar->conexion();
         $this->message = new FlashMessages();
-        
+        $this->EntidadesAseguradoras = new EntidadesAseguradoras($this->adapter);
+      
+    }
+
+
+
+    public function registerObserver(Observer $observer)
+    {
+       
+    }
+    public function removeObserver(Observer $observer)
+    {
+
+    }
+    public function NotifyObserver()
+    {
+        $this->update();
+    }
+    public function update()
+    {
+        $this->admin_change_aseguradora();
     }
      
     public function index(){
@@ -24,26 +54,37 @@ class IndexController extends ControladorBase{
     }
 
     public function home(){       
-        //Cargamos la vista index y le pasamos valores para generar las gráficas.
-         
+        //Cargamos la vista index y le pasamos valores para generar las gráficas.        
+
+        $sqlmodel = new SQLModel('undefined',$this->adapter);
         
         if(!isset($_SESSION['id']))
         {
             $this->message->warning('Acesso no autorizado');
             $this->redirect('Index');
+        }      
+
+        
+        
+        if(isset($_POST['aseguradora_select']) and $_SESSION['rol']==1)
+        {
+
+            if($_POST['aseguradora_select'] !=0 and $_POST['aseguradora_select'] !=null)
+            {
+               $_SESSION['aseguradora'] = $_POST['aseguradora_select'];
+               $this->NotifyObserver();
+            }
+            
+            
+        }
+        else
+        {
+            $this->NotifyObserver();
         }
 
       
+        $aseguradora = $_SESSION['aseguradoras'];
 
-        $aseguradora = $_SESSION['aseguradora'];
-
-        if(isset($_POST['aseguradora_select']) and $_SESSION['rol']==1)
-        {
-            if($_POST['aseguradora_select'] !=0 and $_POST['aseguradora_select'] !=null)
-            {
-                $aseguradora = $_POST['aseguradora_select'];
-            }            
-        }
 
         //Grafica de área
 
@@ -51,7 +92,7 @@ class IndexController extends ControladorBase{
         $datearray = array();
         $countarray = array();
         $countarray2 = array();
-        $sqlmodel = new SQLModel('undefined',$this->adapter);
+      
         $max_area = 0;
 
         if(isset($_POST['area_week']) and !empty($_POST['area_week']))
@@ -73,7 +114,7 @@ class IndexController extends ControladorBase{
         for($i=0;$i<=10;$i++)
         {
              $date = date('Y-m-d', strtotime($f_date."+".$i." days"));
-             $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fec_siniestro = '$date' and aseguradora = $aseguradora";
+             $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fec_siniestro = '$date' and aseguradora in ($aseguradora)";
              //echo $sql;
              $data = $sqlmodel->executeSql($sql);
 
@@ -82,7 +123,7 @@ class IndexController extends ControladorBase{
                 $max_area = $data->count;   
              }
 
-             $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fecha_inicial = '$date' and aseguradora = $aseguradora";
+             $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fecha_inicial = '$date' and aseguradora in ($aseguradora)";
              //echo $sql;
              $data2 = $sqlmodel->executeSql($sql);
              $inarray = array("date"=>$date,"count"=>$data->count,"count"=>$data2->count);
@@ -137,7 +178,7 @@ class IndexController extends ControladorBase{
         array_push($bar_labels, $current_month);        
 
 
-        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fec_siniestro like '%$month_date%' and aseguradora = $aseguradora";
+        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fec_siniestro like '%$month_date%' and aseguradora in ($aseguradora)";
         //echo $sql;
         $data1 = $sqlmodel->executeSql($sql);
 
@@ -145,7 +186,7 @@ class IndexController extends ControladorBase{
 
         //echo "<br>";
 
-        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fecha_inicial like '%$month_date%' and aseguradora = $aseguradora";
+        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where fecha_inicial like '%$month_date%' and aseguradora in ($aseguradora)";
         //echo $sql;
         $data2 = $sqlmodel->executeSql($sql);
 
@@ -177,11 +218,11 @@ class IndexController extends ControladorBase{
         array_push($total_month_siniesters_percent, $percent1);
         array_push($total_month_services_percent, $percent2);
 
-        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where YEAR(fec_siniestro) = '$year'  and aseguradora = $aseguradora";
+        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where YEAR(fec_siniestro) = '$year'  and aseguradora in ($aseguradora)";
        
         $data1 = $sqlmodel->executeSql($sql);    
 
-        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where YEAR(fecha_inicial) = '$year' and aseguradora = $aseguradora";
+        $sql = "SELECT COUNT(id) as count FROM aoacol_aoacars.siniestro where YEAR(fecha_inicial) = '$year' and aseguradora in ($aseguradora)";
       
         $data2 = $sqlmodel->executeSql($sql);        
 
@@ -204,18 +245,26 @@ class IndexController extends ControladorBase{
         $year_labels = array("Siniestros -> ".$percent1,"Servicios -> ".$percent2);        
 
         $year_siniesters = array($data1->count,$data2->count);
-      
-        $modelAseguradora =  new Aseguradoras($this->adapter);
 
-        $aseguradoras = $modelAseguradora->orderBy("nombre","ASC");
+
+        // Modificar aseguradoras para que aparescan donde pertenescan entidades
+      
+        $aseguradoras = $this->EntidadesAseguradoras->query(null);
+
+        //print_r($aseguradoras);
+
+        //exit;
+
+        //
 
         $max_area = $max_area+7;
 
-        $saseguradora = $aseguradora;
+        
+        
 
         //datos para select de años.
 
-        $sql = "select min(YEAR(fec_siniestro)) as min_date from siniestro where aseguradora = $aseguradora and fec_siniestro != '0000-00-00' LIMIT 1";
+        $sql = "select min(YEAR(fec_siniestro)) as min_date from siniestro where aseguradora in ($aseguradora) and fec_siniestro != '0000-00-00' LIMIT 1";
 
         $year_min_date = $sqlmodel->executeSql($sql);
 
@@ -230,7 +279,7 @@ class IndexController extends ControladorBase{
             $_SESSION['CURRENT_MENU_STATE'] = $menu_open->current_state();  
         }
 
-        $sql = "SELECT max_days_month FROM aseguradora WHERE id = $aseguradora LIMIT 1";
+        $sql = "SELECT max_days_month FROM aseguradora WHERE id in ($aseguradora) LIMIT 1";
       
         $data3 = $sqlmodel->executeSql($sql);  
 
@@ -253,21 +302,21 @@ class IndexController extends ControladorBase{
 
         //fechas que inician y terminan en el periodo
 
-        $query = 'select  sum(datediff(fecha_final,fecha_inicial)) as diff  from siniestro where fecha_inicial >= "'.$first_day_period.'" and fecha_final<= "'.$first_next_period.'" and aseguradora = "'.$aseguradora.'"  LIMIT 1';
+        $query = 'select  sum(datediff(fecha_final,fecha_inicial)) as diff  from siniestro where fecha_inicial >= "'.$first_day_period.'" and fecha_final<= "'.$first_next_period.'" and aseguradora in ('.$aseguradora.')  LIMIT 1';
          
      
         $cdata = $sqlmodel->executeSql($query);
 
         $current_days += $cdata->diff;  
         //terminan en el periodo
-        $query = 'select sum(datediff(fecha_final,"'.$first_day_period.'")) as diff  from siniestro where fecha_inicial < "'.$first_day_period.'" and fecha_final >= "'.$first_day_period.'" and fecha_final < "'.$first_next_period.'" and aseguradora = "'.$aseguradora.'" LIMIT 1';
+        $query = 'select sum(datediff(fecha_final,"'.$first_day_period.'")) as diff  from siniestro where fecha_inicial < "'.$first_day_period.'" and fecha_final >= "'.$first_day_period.'" and fecha_final < "'.$first_next_period.'" and aseguradora in ('.$aseguradora.') LIMIT 1';
 
         $cdata = $sqlmodel->executeSql($query);
 
         $current_days += $cdata->diff;
 
         //no han terminado en el periodo
-        $query = 'select sum(datediff("'.$last_day_period.'",fecha_inicial)) as diff  from siniestro where fecha_inicial > "'.$first_day_period.'" and fecha_final> "'.$first_next_period.'" and aseguradora = "'.$aseguradora.'" LIMIT 1';
+        $query = 'select sum(datediff("'.$last_day_period.'",fecha_inicial)) as diff  from siniestro where fecha_inicial > "'.$first_day_period.'" and fecha_final> "'.$first_next_period.'" and aseguradora in ('.$aseguradora.') LIMIT 1';
 
         $cdata = $sqlmodel->executeSql($query);
 
@@ -277,9 +326,11 @@ class IndexController extends ControladorBase{
 
         //exit;
 
+        $saseguradora = $_SESSION['aseguradora'];
+
         $this->view("index",array("areachartvalues"=>$areachartvalues,"datearray"=>$datearray,"countarray"=>$countarray,
         "bar_labels"=>$bar_labels,"total_month_services"=>$total_month_services,"total_month_siniesters"=>$total_month_siniesters,"countarray2"=>$countarray2,"total_month_services_percent"=>$total_month_services_percent,"total_month_siniesters_percent"=>$total_month_siniesters_percent,
-        "year_siniesters"=>$year_siniesters,"aseguradoras"=>$aseguradoras,"max_bar"=>$max_bar,"max_area"=>$max_area,"saseguradora"=>$aseguradora,"year_min"=>$year_min,"post"=>$_POST,"year_labels"=>$year_labels,"max_month_days"=>$max_month_days,"current_days"=>$current_days));
+        "year_siniesters"=>$year_siniesters,"aseguradoras"=>$aseguradoras,"max_bar"=>$max_bar,"max_area"=>$max_area,"saseguradora"=>$saseguradora,"year_min"=>$year_min,"post"=>$_POST,"year_labels"=>$year_labels,"max_month_days"=>$max_month_days,"current_days"=>$current_days));
     }
 
 
@@ -328,10 +379,49 @@ class IndexController extends ControladorBase{
 
                 $_SESSION['ruta_foto'] = $aseguradora->emblema_f;
 
+                $_SESSION['aseguradora'] = $this->change_for_entity($_SESSION['aseguradora']); 
+
+                //print_r($_SESSION);
+                //exit;               
+
                 $this->redirect('Index','home');
             }
         }
     }
+
+    public function admin_change_aseguradora()
+    {
+        //print_r($_SESSION);
+        $arra_post = explode(",", $_SESSION['aseguradora']);
+
+        if($arra_post[1] == "entidad")
+        {
+            $sqlmodel = new SQLModel("undefined",$this->adapter);
+            $sql = "SELECT group_concat(id) as asegs from aoacol_aoacars.aseguradora where entidad = ".$arra_post[1]." LIMIT 1";
+            $composed = $sqlmodel->executeSql($sql);
+            //print_r($composed);
+            //exit;
+            $_SESSION['aseguradoras'] = $composed->asegs;            
+            $obsaseguradora =  explode(",",$composed->asegs);             
+             $id = $obsaseguradora[0];                
+        }
+        else
+        {
+            $_SESSION['aseguradoras'] = $arra_post[0];
+            $id = $arra_post[0];
+        }
+
+        $modelaseguradora = new Aseguradoras($this->adapter);        
+
+        $aseguradora = $modelaseguradora->getById($id);
+      
+        $_SESSION['ruta_foto'] = $aseguradora->emblema_f;
+        
+        //$_SESSION['aseguradora'] = $this->change_for_entity($id);
+      
+    }
+
+
 
     public function view_changepsw()
     {
@@ -381,7 +471,9 @@ class IndexController extends ControladorBase{
             $aseguradora = $modelaseguradora->getById($_SESSION['aseguradora']);
 
             $_SESSION['ruta_foto'] = $aseguradora->emblema_f;
-    
+            
+            $_SESSION['aseguradora'] = $this->change_for_entity($_SESSION['aseguradora']);
+
             $this->redirect('Index','home'); 
         }
     }
@@ -406,5 +498,22 @@ class IndexController extends ControladorBase{
             $_SESSION['CURRENT_MENU_STATE'] = $menu->current_state();
         }
     }
+
+    public function change_for_entity($id)
+    {
+        $aseguradora = new Aseguradoras($this->adapter);
+        $current_aseguradora = $aseguradora->getById($id);
+        if($current_aseguradora->entidad != null)
+        {
+            return $current_aseguradora->entidad.','.'entidad';
+        }
+        else
+        {
+            return $current_aseguradora->id.','.'aseguradora';
+        }
+    }
+
+
+
  
 }

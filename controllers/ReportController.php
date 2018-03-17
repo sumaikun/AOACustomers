@@ -1,45 +1,86 @@
-
 <?php
+namespace controllers;
+use controllers\IndexController as IndexController;
+use core\ControladorBase;
+use Containers\EntidadesAseguradoras;
+use Observable\Subject as Subject;
+use Observable\Observer as Observer;
+use libraries\FlashMessages; 
+use core\Conectar;
+use models\SQLModel;
+use models\Aseguradoras;
+use models\Ciudades;
+use models\Estado_siniestro;
 
-class ReportController extends ControladorBase{
+class ReportController extends ControladorBase implements Subject{
      
     public $conectar;
     public $adapter;
+    public $observer;
     
      
     public function __construct() {
 
-        parent::__construct();
-        
-        require 'libraries/FlashMessages.php';  
+        parent::__construct();          
         $this->conectar=new Conectar();
         $this->adapter=$this->conectar->conexion();
         $this->message = new FlashMessages();
+
         if(!isset($_SESSION['id']) )
         {
             $this->message->warning('Acesso no autorizado');
             $this->redirect('Index');
         }
-        
+
+        $this->EntidadesAseguradoras = new EntidadesAseguradoras($this->adapter);
+        $subject = new IndexController();
+        $this->registerObserver($subject);
+    }
+
+    public function registerObserver(Observer $o)
+    {
+       $this->observer = $o;
+    }
+    public function removeObserver(Observer $o)
+    {
+
+    }
+    public function NotifyObserver()
+    {
+        $this->observer->update();
     }
      
     public function index(){         
         /*echo apcu_fetch("login text");
         exit;*/
-
         set_time_limit(60);
 
         $registros = null;
+        
         $sqlmodel = new SQLModel('undefined',$this->adapter);
-        $aseguradora = $_SESSION['aseguradora'];
+       
+     
 
         if(isset($_POST['aseguradora_select']) and $_SESSION['rol']==1)
         {
+
             if($_POST['aseguradora_select'] !=0 and $_POST['aseguradora_select'] !=null)
             {
-                $aseguradora = $_POST['aseguradora_select'];
-            }            
+               $_SESSION['aseguradora'] = $_POST['aseguradora_select'];
+               $this->NotifyObserver();
+            }
+            
+            
         }
+        else
+        {
+            $this->NotifyObserver();
+        }
+
+      
+        $aseguradora = $_SESSION['aseguradoras'];
+
+      
 
         if(isset($_POST['fecha1']) and isset($_POST['fecha2']) and !empty($_POST['fecha1']) and !empty($_POST['fecha2']))
         {
@@ -50,7 +91,9 @@ class ReportController extends ControladorBase{
             $date_condition = null;
         }
 
-        $sql = "Select s.*,c.flota as flota,c.placa as cita_placa from aoacol_aoacars.siniestro as s inner join cita_servicio as c on c.siniestro = s.id  where  c.estado = 'C' and s.aseguradora =  $aseguradora ".$date_condition." order by id desc LIMIT 1000";
+
+        $sql = "Select s.*,c.flota as flota,c.placa as cita_placa from aoacol_aoacars.siniestro as s inner join cita_servicio as c on c.siniestro = s.id  where  c.estado = 'C' and s.aseguradora in ($aseguradora) ".$date_condition." order by id desc LIMIT 1000";
+
 
         //echo $sql;
 
@@ -63,8 +106,8 @@ class ReportController extends ControladorBase{
         //exit;
 
         $modelAseguradora =  new Aseguradoras($this->adapter);
-        $aseguradoras = $modelAseguradora->orderBy("nombre","ASC");
-        $saseguradora = $aseguradora;
+
+        $aseguradoras = $this->EntidadesAseguradoras->query(null);
 
         $ModelCiudad = new Ciudades($this->adapter);
         $ciudades = $ModelCiudad->getArrayDefined("nombre","codigo");
@@ -79,7 +122,7 @@ class ReportController extends ControladorBase{
         //print_r($ciudades);
         //echo count($registros);
         //exit;
-       
+       $saseguradora = $_SESSION['aseguradora'];
 
         if(isset($_POST['type_of_filter']))
         {   

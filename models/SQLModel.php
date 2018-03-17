@@ -1,4 +1,8 @@
 <?php
+namespace models;
+
+use core\ModeloBase;
+
 class SQLModel extends ModeloBase{
     private $table;
      

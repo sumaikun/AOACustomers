@@ -1,4 +1,6 @@
 <?php
+namespace models;
+use core\EntidadBase;
 class Seguimiento extends EntidadBase{
     
     private $id;

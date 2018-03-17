@@ -1,5 +1,12 @@
-
 <?php
+namespace controllers;
+
+use core\ControladorBase;
+use libraries\FlashMessages;
+use core\Conectar;
+use models\Seguimiento;
+use models\SQLModel;
+use models\Aseguradoras;
 
 class ConsultController extends ControladorBase{
      

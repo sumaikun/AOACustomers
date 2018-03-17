@@ -1,5 +1,5 @@
 <?php
-
+namespace libraries;
 //https://mikeeverhart.net/php-flash-messages/
 
 class FlashMessages {

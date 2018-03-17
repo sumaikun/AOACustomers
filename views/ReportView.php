@@ -38,7 +38,7 @@
                   <select  class="form-control" name="aseguradora_select"  required>
                       <option value="0">Selecciona</option>
                     <?php foreach($aseguradoras as $aseguradora) { ?>
-                      <option value="<?php echo $aseguradora->id ?>" <?php if($saseguradora == $aseguradora->id): ?> 
+                      <option value="<?php echo $aseguradora->id.','.$aseguradora->tipo ?>" <?php $currents = $aseguradora->id.','.$aseguradora->tipo; if($saseguradora == $currents): ?> 
                       selected <?php endif ?> > <?php echo $aseguradora->nombre ?> </option>
                     <?php } ?>
                   </select>

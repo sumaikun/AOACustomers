@@ -1,4 +1,8 @@
 <?php
+namespace core;
+
+use core\ModeloBase;
+
 class EntidadBase{
     private $table;
     private $db;
@@ -127,7 +131,8 @@ class EntidadBase{
     public function last_table_id()
     {
        //echo "SELECT  max(id) as max from $this->table";
-        $query = $this->sql_manager->executeSql("SELECT  max(id) as max from $this->table");
+        $query = $this->sql_manager->executeSql("SELECT  max(id) as max from $this->table LIMIT 1");
+
         //print_r($query);
          if($query->max == null)
         {

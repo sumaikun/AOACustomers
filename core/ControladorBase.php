@@ -1,4 +1,9 @@
 <?php
+namespace core;
+use core\AyudaVistas as AyudaVistas;
+use libraries\FlashMessages;
+ 
+
 class ControladorBase{
  
     public function __construct() {
@@ -26,16 +31,17 @@ class ControladorBase{
 
         if(is_array($datos))
         {
+        
             foreach ($datos as $id_assoc => $valor) {
             ${$id_assoc}=$valor; 
             }
         }
         
          
-        require_once 'core/AyudaVistas.php';
+        //require_once 'core/AyudaVistas.php';
         $helper=new AyudaVistas();
      
-        require_once 'libraries/FlashMessages.php';
+        //require_once 'libraries/FlashMessages.php';
         $msg = new FlashMessages();
 
         require_once 'views/'.$vista.'View.php';

@@ -1,5 +1,12 @@
-
 <?php
+namespace controllers;
+
+use core\ControladorBase;
+use libraries\FlashMessages;
+use core\Conectar;
+use models\Usuarios;
+use models\Aseguradoras;
+use models\SQLModel;
 
 class UserController extends ControladorBase{
      

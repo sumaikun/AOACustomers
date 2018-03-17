@@ -1,4 +1,7 @@
 <?php
+
+namespace core;
+
 class ModeloBase{
     private $table;
     private $fluent;

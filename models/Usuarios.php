@@ -1,4 +1,6 @@
 <?php
+namespace models;
+use core\EntidadBase;
 class Usuarios extends EntidadBase{
     
     private $id;
