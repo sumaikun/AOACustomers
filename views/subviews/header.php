@@ -17,6 +17,15 @@
   <meta name="description" content="">
   <meta name="author" content="">
   <title>Sistemas de clientes AOA</title>
+
+  <!--Angular-->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js" ></script>
+
+  <script src='js/Modules/app.js'></script>
+  <script src='js/Services/ChartService.js'></script>
+  <script src='js/Controllers/ChartController.js'></script>
+
+
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->

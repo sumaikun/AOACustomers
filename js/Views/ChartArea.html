@@ -1,0 +1,10 @@
+ <div class="card-header">
+<i class="fa fa-area-chart"></i> Siniestros por 10 dias</div>
+<div class="card-body">
+<canvas id="myAreaChart" width="100%" height="30"></canvas>
+</div>
+<div class="card-footer small text-muted">Actualizado</div>
+
+<label>Semana:</label> <input <?php if(isset($post['area_week'])){ echo "value='".$post['area_week']."'"; }
+else{ echo "value=".date('o')."-W".date('W'); } ?>  type="week" ng-model="chart.area" ng-change="change_areachart()" class="datepicker" name="area_inicio"> <input type="hidden"> 
+         

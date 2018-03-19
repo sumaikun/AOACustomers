@@ -105,7 +105,8 @@
 }
 </style>
 
-<div>
+<div ng-app="Appi" ng-controller="ChartController">
+
   <div class="content-wrapper">
     <div class="container-fluid">
       <!-- Breadcrumbs-->
@@ -131,6 +132,7 @@
       <br>
       <?php endif ?>
       <!-- Area Chart Example-->
+      
       <div class="card mb-3 inner_img">
         <div class="card-header">
           <i class="fa fa-area-chart"></i> Siniestros por 10 dias</div>
@@ -140,12 +142,13 @@
         <div class="card-footer small text-muted">Actualizado</div>
   
           <label>Semana:</label> <input <?php if(isset($post['area_week'])){ echo "value='".$post['area_week']."'"; }
-           else{ echo "value=".date('o')."-W".date('W'); } ?>  type="week" onchange="catch_data(164)" class="datepicker" name="area_inicio"> <input type="hidden"> 
+           else{ echo "value=".date('o')."-W".date('W'); } ?> ng-init="first_load_areachart('<?php echo date('o')."-W".date('W'); ?>')"  type="week" ng-model="current_chart.area" ng-change="change_areachart()" class="datepicker" name="area_inicio"> <input type="hidden"> 
          
        
       </div>   
+      
 
-
+    
 
       <div class="card mb-3 inner_img">
         <div class="card-header">
@@ -203,7 +206,7 @@
             <div class="card-footer small text-muted">Actualizado</div>
             <form method="post">
                 <label>Mes</label>
-                <input type="month" onchange="catch_data(625)" <?php if(isset($post['bar_month'])){  ?>  value="<?php echo $post['bar_month']  ?>"  <?php } else {
+                <input type="month" ng-init="first_load_barchart('<?php echo date('o-m') ?>')" ng-model="current_chart.bar" ng-change="change_barchart()"   <?php if(isset($post['bar_month'])){  ?>  value="<?php echo $post['bar_month']  ?>"  <?php } else {
                   echo "value = ".date('o-m');
                 } ?> class="datepicker" name="sbar_month">
               
@@ -221,7 +224,7 @@
             <div class="card-footer small text-muted">Actualizado</div>
         
                 <label>Año</label>
-                <select  onchange="catch_data(625)" width="100%" name="year_bar">
+                <select ng-init="first_load_piechart('<?php echo date('o') ?>')" ng-model="current_chart.pie" ng-change="change_piechart()"   width="100%" name="year_bar">
                   <option>Selecciona</option>
                   <?php for($i=$year_min;$i<=date('o');$i++){  ?>
                     <option <?php if(isset($post['pie_year'])){ if($post['pie_year'] == $i) { echo "selected"; } } else { if($i==date('o')) { echo "selected"; }  } ?>    value="<?php echo $i ?>"><?php echo $i ?></option>
@@ -251,10 +254,10 @@
     <!-- /.content-wrapper-->
   <?php include('subviews/footer.php') ?>
 
-  <script>
+  <script src="js/dashboardcharts.js"></script>
 
 
-    
+  <script>    
 
     var scrolling = <?php if(isset($post['scroll_move'])){ echo $post['scroll_move'];} else{ echo 164; }  ?>
 
@@ -284,176 +287,7 @@
       
     }
 
-    var dates_label = <?php echo json_encode($datearray) ?>;
-    var counts_data = <?php echo json_encode($countarray) ?>;
-    var counts2_data = <?php echo json_encode($countarray2) ?>;
-
-    var bar_label = <?php echo json_encode(array_reverse($bar_labels)) ?>;
-
-    var total_services = <?php echo json_encode($total_month_services) ?>;
-
-    var total_siniesters = <?php echo json_encode($total_month_siniesters) ?>;
-
-    var total_services_percent = <?php echo json_encode($total_month_services_percent) ?>;
-
-    var total_siniesters_percent = <?php echo json_encode($total_month_siniesters_percent) ?>;
-
-    var year_siniesters = <?php echo json_encode($year_siniesters) ?>;
-
-    var year_labels = <?php echo json_encode($year_labels) ?>;
-
-    var max_bar = <?php echo $max_bar ?>;
-
-    var max_area = <?php echo $max_area ?>;
-
-    //console.log(dates_label);
-    //console.log(counts_data);
-
-    console.log(total_services[0]);
-
-    Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#292b2c';
-    // -- Area Chart Example
-    var ctx = document.getElementById("myAreaChart");
-    var myLineChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        //labels: ["Mar 1", "Mar 2", "Mar 3", "Mar 4", "Mar 5", "Mar 6", "Mar 7", "Mar 8", "Mar 9", "Mar 10", "Mar 11", "Mar 12", "Mar 13"],
-        labels: dates_label,
-        datasets: [{
-          label: "Siniestros",
-          lineTension: 0.3,
-          backgroundColor: "rgba(2,117,216,0.2)",
-          borderColor: "rgba(2,117,216,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(2,117,216,1)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(10, 2, 121, 0.98)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-          data:counts_data,
-          //data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
-        },
-        {
-          label: "Servicios",
-          lineTension: 0.3,
-          backgroundColor: "rgba(226, 29, 18, 0.66)",
-          borderColor: "rgba(226,29,18,1)",
-          pointRadius: 5,
-          pointBackgroundColor: "rgba(226, 29, 18, 0.66)",
-          pointBorderColor: "rgba(255,255,255,0.8)",
-          pointHoverRadius: 5,
-          pointHoverBackgroundColor: "rgba(121, 2, 2, 0.98)",
-          pointHitRadius: 20,
-          pointBorderWidth: 2,
-          data:counts2_data,
-          //data: [10000, 30162, 26263, 18394, 18287, 28682, 31274, 33259, 25849, 24159, 32651, 31984, 38451],
-        }],
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            time: {
-              unit: 'date'
-            },
-            gridLines: {
-              display: true
-            },
-            ticks: {
-              maxTicksLimit: 7
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              min: 0,
-              max: max_area,
-              maxTicksLimit: 5
-            },
-            gridLines: {
-              color: "rgba(0, 0, 0, .125)",
-            }
-          }],
-        },
-        legend: {
-          display: true
-        }
-      }
-    });
-    // -- Bar Chart Example
-    var ctx = document.getElementById("myBarChart");
-    var myLineChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        //labels: ["January", "February", "March", "April", "May", "June"],
-        labels: bar_label,
-        datasets: [{
-          label: "Siniestros",
-          backgroundColor: "rgba(2,117,216,1)",
-          borderColor: "rgba(2,117,216,1)",
-          labels:total_siniesters_percent,
-          data: total_siniesters,          
-        },
-        {
-          label: "Servicios tomados",
-          backgroundColor: "rgba(226,29,18,1)",
-          borderColor: "rgba(226,29,18,1)",
-          labels:total_services_percent,
-          data: total_services,
-        }],
-       
-      },
-      options: {
-        scales: {
-          xAxes: [{
-            time: {
-              unit: 'month'
-            },
-            gridLines: {
-              display: false
-            },
-            ticks: {
-              maxTicksLimit: 6
-            }
-          }],
-          yAxes: [{
-            ticks: {
-              min: 0,
-              max: max_bar,
-              maxTicksLimit: 5
-            },
-            gridLines: {
-              display: true
-            }
-          }],
-        },
-        legend: {
-          display: true
-        },
-        tooltips: {
-          callbacks: {
-            label:function(tooltipItem, data) {
-            var label = data.datasets[tooltipItem.datasetIndex].labels[tooltipItem.index];
-            var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-            return label + ': ' + value;
-           }
-          }
-        }
-      }
-    });
-    // -- Pie Chart Example
-    var ctx = document.getElementById("myPieChart");
-    var myPieChart = new Chart(ctx, {
-      type: 'pie',
-      data: {
-        labels: year_labels,
-        datasets: [{
-          //data: [12.21, 15.58, 11.25, 8.32],
-          data: year_siniesters,
-          backgroundColor: ['#007bff', '#dc3545'],
-        }],
-      },
-    });
+  
   </script>
 
     <script>
