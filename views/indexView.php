@@ -163,28 +163,28 @@
                       <br>
                       <span style="font-size: 2.5em; margin-right: 5px;" id="clock_text"><?php echo $current_days ?></span>
                     </div>
-                                <div class="ii">
-                                    <div><b><span class="num_1"></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_2 tach_text"><?php //echo $portion ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_3 tach_text"><?php //echo $portion*2 ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_4 tach_text"><?php //echo $portion*3 ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_5 tach_text"><?php //echo $portion*4 ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_6 tach_text"><?php //echo $portion*5 ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_7 tach_text"><?php //echo $portion*6 ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b><span class="num_8 tach_text"><?php //echo $portion*7 ?></span></b></div>
-                                    <div><b></b></div>
-                                    <div><b style="background:#B40404 !important;"><span style="word-wrap:normal;" class="num_9 tach_text"><?php echo $portion*8 ?></span></b></div>
-                                </div> 
-                              <div id="redline"></div>
-                              <div id="yellowline"></div>
-                              <div id="orangeline"></div>
+                            <div class="ii">
+                                <div><b><span class="num_1"></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_2 tach_text"><?php //echo $portion ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_3 tach_text"><?php //echo $portion*2 ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_4 tach_text"><?php //echo $portion*3 ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_5 tach_text"><?php //echo $portion*4 ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_6 tach_text"><?php //echo $portion*5 ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_7 tach_text"><?php //echo $portion*6 ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b><span class="num_8 tach_text"><?php //echo $portion*7 ?></span></b></div>
+                                <div><b></b></div>
+                                <div><b style="background:#B40404 !important;"><span style="word-wrap:normal;" class="num_9 tach_text"><?php echo $portion*8 ?></span></b></div>
+                            </div> 
+                          <div id="redline"></div>
+                          <div id="yellowline"></div>
+                          <div id="orangeline"></div>
                         <div class="line"></div>
                        <div class="pin"><div class="inner"></div></div> 
                     </div>
@@ -327,22 +327,6 @@
 
       jQuery.browser = browser;  
 
-
-
-
-      /*  if ($.browser.mozilla)
-    {
-        if ($('.datepicker')[0].type != 'date') $('.datepicker').datepicker();
-        $(function () {
-            $(".datepicker").datepicker({
-                changeMonth: true,
-                changeYear: true,
-                yearRange: "1900:2015",
-                dateFormat: "yy-mm-dd",
-                defaultDate: '1900-01-01'
-            });
-        });
-    }*/
 
 
     function check_view_content()

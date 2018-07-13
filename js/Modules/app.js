@@ -11,3 +11,24 @@ app.config(function ($routeProvider) {
       templateUrl: 'js/Views/Chart.html' 
     });  
 	});*/
+
+function js_form(data,Resource)
+{
+  this.Resource = Resource;
+  this.data = data;
+  this.loaded = [];
+  this.init();  	
+}
+
+js_form.prototype.init = function()
+{
+  var self = this;
+  var promise = new Promise( (resolve, reject) => {
+    var request = self.Resource.META_COLUMNS(self.data);
+    request.then(function(response){
+      self.columns = response.data.columns;
+      resolve("¡Done!");
+    });
+  });
+  self.loaded.push(promise);  
+}

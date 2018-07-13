@@ -111,6 +111,7 @@ class EntidadBase{
         return $query;        
         
     }
+    
     public function update($object)
     {
   

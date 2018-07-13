@@ -153,8 +153,9 @@
                 <label class="form-control">Rol</label>
                 <select class="form-control" name="rol" required>
                   <option>Selecciona</option>
-                  <option value="1">Administrador</option>
-                  <option value="2">Cliente</option>
+                   <?php foreach($roles as $rol) { ?>
+                    <option value="<?php echo $rol->id ?>"><?php echo $rol->nombre ?></option>
+                  <?php } ?>
                 </select>
             </div>
           </div>
@@ -210,8 +211,9 @@
                 <label class="form-control">Rol</label>
                 <select class="form-control" id="edit_rol" name="rol" required>
                   <option>Selecciona</option>
-                  <option value="1">Administrador</option>
-                  <option value="2">Cliente</option>
+                  <?php foreach($roles as $rol) { ?>
+                    <option value="<?php echo $rol->id ?>"><?php echo $rol->nombre ?></option>
+                  <?php } ?>
                 </select>
             </div>
           </div>

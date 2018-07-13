@@ -49,9 +49,14 @@ class UserController extends ControladorBase{
         $aseguradoras = $modelAseguradora->orderBy("nombre","ASC");
         $asqlmodel = new SQLModel("aoacol_aoacars.aseguradora",$this->adapter);
         $rsqlmodel = new SQLModel("aoa_clientes.roles",$this->adapter);
+
+
+        $sqlmodel = new SQLModel('undefined',$this->adapter);
+        $sql = "Select * from aoa_clientes.roles ";
+        $roles = $sqlmodel->executeSql($sql);
         //print_r($aseguradoras);
 
-        $this->view("Usuarios",array("usuarios"=>$usuarios,"aseguradoras"=>$aseguradoras,"asqlmodel"=>$asqlmodel,"rsqlmodel"=>$rsqlmodel));
+        $this->view("Usuarios",array("usuarios"=>$usuarios,"aseguradoras"=>$aseguradoras,"asqlmodel"=>$asqlmodel,"rsqlmodel"=>$rsqlmodel,"roles"=>$roles));
     }
 
     public function create(){

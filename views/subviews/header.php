@@ -7,6 +7,50 @@
       }
       
 ?>
+
+
+<?php 
+  //lamento el codigo de servidor en una vista se como se deberia hacer pero al menos por hoy me la pela y ya casi son las 6
+  function base64_encode_image($filename=string,$filetype=string) {
+      //echo "<br>";
+      if ($filename) {
+           $remoteFile = $filename;
+          $ch = curl_init($remoteFile);
+          curl_setopt($ch, CURLOPT_NOBODY, true);
+          curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+          curl_setopt($ch, CURLOPT_HEADER, true);
+          curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); //not necessary unless the file redirects (like the PHP example we're using here)
+          $data = curl_exec($ch);
+          curl_close($ch);
+          if ($data === false) {
+            echo 'cURL failed';
+            exit;
+          }
+
+          $contentLength = 'unknown';
+          $status = 'unknown';
+          if (preg_match('/^HTTP\/1\.[01] (\d\d\d)/', $data, $matches)) {
+            $status = (int)$matches[1];
+          }
+          if (preg_match('/Content-Length: (\d+)/', $data, $matches)) {
+            $contentLength = (int)$matches[1];
+          }
+
+          //echo 'HTTP Status: ' . $status . "\n";
+          //echo 'Content-Length: ' . $contentLength;
+          if(!is_numeric($contentLength))
+          {
+            $contentLength = 0;
+          }
+          $imgbinary = fread(fopen($filename, "r"), $contentLength+100);
+          return 'data:image/' . $filetype . ';base64,' . base64_encode($imgbinary);
+      }
+  }
+  
+  $url = "http://app.aoacolombia.com/Control/operativo/".$_SESSION['ruta_foto'];
+
+  $image_64 = base64_encode_image($url,"png");
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,8 +67,13 @@
 
   <script src='js/Modules/app.js'></script>
   <script src='js/Services/ChartService.js'></script>
+  <script src='js/Services/SystemService.js'></script>
+  <script src='js/Services/RegisterService.js'></script>
   <script src='js/Controllers/ChartController.js'></script>
+  <script src='js/Controllers/RegisterController.js'></script>
 
+
+  <link rel="shortcut icon" type="image/png" href="assets/img/icon.png" />
 
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -109,7 +158,7 @@
 
   <!-- Navigation-->
   <nav style="background-color: #0B610B!important;" class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="<?php echo $helper->url("index","home"); ?>">AOA administración operativa Automotriz</a>
+    <a class="navbar-brand" href="<?php echo $helper->url("index","home"); ?>">AOA Administración Operativa Automotriz</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -117,7 +166,7 @@
       <ul  style="background-color: #97af00!important;" class="navbar-nav navbar-sidenav" id="exampleAccordion">
 
         <li style="background-color:#F5FBEF;">
-          <img  class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="aoa_image" src="http://www.aoacolombia.com/assets/img/logo.png">
+          <img  class="responsive <?php echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="aoa_image" src="assets/img/logo.png">
           <br>
           <br>
         </li>
@@ -138,7 +187,7 @@
           </ul>        
         </li>
        <?php endif ?>
-
+      <?php if(in_array($_SESSION['rol'], array(1,2))): ?>
         <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Tablero">
           <a style="color:white;" class="nav-link" href="<?php echo $helper->url("index","home"); ?>">
             <i class="fa fa-fw fa-dashboard"></i>
@@ -159,11 +208,19 @@
             <span class="nav-link-text">Consultas</span>
           </a>
         </li>
+        <?php endif ?>
 
-
-         
-        <li style="background-color:#97af00; background-image: url('http://app.aoacolombia.com/Control/operativo/<?php echo $_SESSION['ruta_foto'] ?>'); background-repeat: no-repeat; background-size: 100%; height:165px;" id="second-image">
-                  
+        <?php if(in_array($_SESSION['rol'], array(1,2,3))): ?>
+        <li class="nav-item menu_l" data-toggle="tooltip" data-placement="right" title="Consultas">
+          <a style="color:white;" class="nav-link" href="<?php echo $helper->url("Register"); ?>">
+            <i class="fa fa-upload" aria-hidden="true"></i>
+            <span class="nav-link-text">Registro de siniestros</span>
+          </a>
+        </li>
+        <?php endif ?>
+        
+        <li style="background-color:#97af00; background-image: url('<?php echo $image_64 ?>'); background-repeat: no-repeat; background-size: 100% 100%; height:165px;" id="second-image">
+              
               <!--<img style="margin-top: 0.8em;" class="responsive <?php //echo $_SESSION['CURRENT_MENU_STATE']['img_class'] ?>" id="otheremp_image" src="http://app.aoacolombia.com/Control/operativo/<?php //echo $_SESSION['ruta_foto'] ?>">-->        
         </li>       
       </ul>
@@ -210,99 +267,7 @@
       </script>
 
       <ul class="navbar-nav ml-auto">
-        <!--
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-envelope"></i>
-            <span class="d-lg-none">Messages
-              <span class="badge badge-pill badge-primary">12 New</span>
-            </span>
-            <span class="indicator text-primary d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i>
-            </span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="messagesDropdown">
-            <h6 class="dropdown-header">New Messages:</h6>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <strong>David Miller</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <strong>Jane Smith</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <strong>John Doe</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item small" href="#">View all messages</a>
-          </div>
-        </li>
-        -->
-        <!--
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-bell"></i>
-            <span class="d-lg-none">Alerts
-              <span class="badge badge-pill badge-warning">6 New</span>
-            </span>
-            <span class="indicator text-warning d-none d-lg-block">
-              <i class="fa fa-fw fa-circle"></i>
-            </span>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="alertsDropdown">
-            <h6 class="dropdown-header">New Alerts:</h6>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-danger">
-                <strong>
-                  <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item small" href="#">View all alerts</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-2">
-            <div class="input-group">
-              <input class="form-control" id="search_control" type="text" placeholder="Search for...">
-              <span class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-          </form>
-        </li>
-        -->
+    
          <span class="pull-right" style="margin-top: 0.4em; color:white"> 
            <?php echo $_SESSION['nombres']." ".$_SESSION['apellidos']; ?>
          </span>

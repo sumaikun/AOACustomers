@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <link rel="shortcut icon" type="image/png" href="http://www.aoacolombia.com/assets/img/logo_footer.png" />
+  <link rel="shortcut icon" type="image/png" href="assets/img/icon.png" />
   <title>SACAP AOA</title>
   <!-- Bootstrap core CSS-->
   <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -17,6 +17,19 @@
   <link href="css/sb-admin.css" rel="stylesheet">
   <script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
+
+<style>
+  
+  body {
+    background-image: url("Images/enterprise.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: auto;
+    background-position: left;
+    background-size: 100% 100%;  
+  }
+
+</style>
 
 <body class="">
   <style>
@@ -34,14 +47,14 @@
     ?>
     <br>
     <br>
-    <div class="text-center">
-      <image src="http://www.aoacolombia.com/assets/img/logo.png" class="img-responsive center-block">
+    <div class="text-center" style="opacity: 0.9;">
+      <image src="assets/img/icon.png" class="img-responsive center-block">
     </image>
       <br>
       <br>
     <div class="card card-login mx-auto mt-5">
-      <div class="card-header" style="background-color: #0B610B!important;">Inicio de sesión</div>
-      <div class="card-body" style="background-color: #97af00!important;">
+      <div class="card-header" style="background-color: #0B610B!important; ">Inicio de sesión</div>
+      <div class="card-body" style="background-color: #97af00!important; ">
         <?php if($_SERVER['HTTP_HOST']=="sac.aoacolombia.com"): ?>
         <script src="https://www.google.com/recaptcha/api.js" async defer></script>
          <script>

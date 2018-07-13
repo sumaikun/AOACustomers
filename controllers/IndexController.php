@@ -383,8 +383,15 @@ class IndexController extends ControladorBase implements Subject, Observer{
 
                 //print_r($_SESSION);
                 //exit;               
-
-                $this->redirect('Index','home');
+                if($_SESSION['rol'] == 3)
+                {
+                    $this->redirect('Register','index');
+                }   
+                else
+                {
+                    $this->redirect('Index','home');    
+                }
+                
             }
         }
     }

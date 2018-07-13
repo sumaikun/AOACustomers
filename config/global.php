@@ -17,7 +17,7 @@ else{
 	$ts1 = strtotime($_SESSION['START']);
 	$ts2 = strtotime($current_time);
 	//echo ($ts2-$ts1)/60; 
- 	if(($ts2-$ts1)/60>6)
+ 	if(($ts2-$ts1)/60>16)
  	{
  		session_destroy();
  		header("Location: index.php");

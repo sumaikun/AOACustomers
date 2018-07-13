@@ -1,0 +1,48 @@
+<div class="page-wrap">
+	
+	<form ng-submit="register_data(formdata)">
+
+		<div style="text-align: center;">
+			<label>Aseguradora</label>
+			<br>
+			<select ng-model="formdata['ASEGURADORA']" required>
+				 <option value="" disabled selected="selected">-- Selecciona Aseguradora --</option>
+				<option ng-repeat="option in select_options" value="{{option.id}}">{{option.nombre}}</option>
+			</select>
+			<span></span>
+		</div>
+		<br>
+		<div  ng-class="col.Type.includes('text') == false ? 'styled-input' : 'styled-input wide' " ng-repeat="field in current_form.fields" ng-init="col = search_col_on_fields(field)">
+			
+			
+				<input  ng-if="(col.Type.includes('int') || col.Type.includes('number')) && field.input == null " ng-model="formdata[col.Field]"   type="number" required="{{field.required}}">
+				<input  ng-if="(col.Type.includes('varchar') || col.Type.includes('char')) && field.input == null " ng-model="formdata[col.Field]" type="text" required="{{field.required}}">
+				<textarea  ng-if="(col.Type.includes('text')) && field.input == null " ng-model="formdata[col.Field]" required="{{field.required}}"></textarea>
+				<input  ng-if="(col.Type.includes('date')) && field.input == null " ng-model="formdata[col.Field]" type="date" required="{{field.required}}">
+				<input  ng-if="(col.Type.includes('year'))  && field.input == null " ng-model="formdata[col.Field]" type="year" required="{{field.required}}">
+			
+
+			
+				<input ng-if="field.input != null && field.input.type == 'datalist' "  ng-model="selectedlist" ng-blur="formdata[col.Field] = datalist_assign(selectedlist,field.input)" type="text"  list="citys" required="{{field.required}}">
+				
+				<select ng-if="field.input != null && field.input.type == 'select'" ng-model="formdata[col.Field]" ng-init='input_options = get_from_scope(field.input.data)' required="{{field.required}}">
+					<option value="" disabled selected="selected">-- Selecciona --</option>
+					<option ng-repeat="option in input_options" value="{{option.id}}">{{option.nombre}}</option>
+				</select>	
+			
+		
+			<label ng-class="field.input != null && field.input.type == 'select' ? 'label_select' : '' ">{{field.alias}}</label>
+			<span></span>
+
+		</div>
+		<button >REGISTRAR</button>	
+	
+	</form>
+
+  <datalist id="citys">
+    <option  data-ng-repeat="city in citys"  value="{{city.nombre}},{{city.departamento}}"></option>
+  </datalist>
+
+</div>
+
+         
